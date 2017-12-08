@@ -1,0 +1,334 @@
+package cz.minesweeper4j;
+
+import cz.minesweeper4j.simulation.MinesweeperResult;
+import cz.minesweeper4j.simulation.MinesweeperResult.MinesweeperResultType;
+import cz.minesweeper4j.simulation.actions.Action;
+import cz.minesweeper4j.simulation.agent.IAgent;
+import cz.minesweeper4j.simulation.board.oop.Board;
+import cz.minesweeper4j.ui.Ctx;
+import cz.minesweeper4j.ui.MinesweeperFrame;
+
+public class MinesweeperSim implements IMinesweeperGame, Runnable {
+
+	// SETUP
+	
+	private Board board;
+	private IAgent agent;
+	private long timeoutMillis;
+	private boolean visualization;
+	
+	
+	// THREAD
+	
+	private Thread gameThread;
+	
+	// RUNTIME
+	
+	private MinesweeperGameState state;
+	
+	private Action agentAction;
+	
+	private boolean observe = true;
+	
+	private boolean shouldRun = true;
+	
+	private MinesweeperFrame vis;
+	
+	// RESULT
+	
+	private MinesweeperResult result = new MinesweeperResult();
+	
+	private int steps = 0;
+	
+	private long simMovesMillis = 0;
+	
+	/**
+	 * @param id
+	 * @param board
+	 * @param agent
+	 * @param sprites
+	 * @param uiBoard
+	 * @param view
+	 * @param frame
+	 * @param timeoutMillis negative number or zero == no time; in milliseconds
+	 */
+	public MinesweeperSim(String id, Board board, IAgent agent, long timeoutMillis, boolean visualization) {
+		// SETUP
+		
+		if (id == null) id = "MinesweeperSim";		
+		this.board = board;
+		this.agent = agent;
+		this.timeoutMillis = timeoutMillis;
+		this.visualization = visualization;
+		
+		// RUNTIME
+		
+		this.state = MinesweeperGameState.INIT;
+		
+		// RESULT
+		
+		result.setId(id);
+		result.setAgent(agent);
+		result.setLevel(board.level == null ? "N/A" : board.level);
+	}
+	
+	@Override
+	public void startGame() {
+		if (state != MinesweeperGameState.INIT) return;
+		try { 
+			state = MinesweeperGameState.RUNNING;
+			gameThread = new Thread(this, "MinesweeperSim");
+			gameThread.start();
+		} catch (Exception e) {
+			stopGame();  
+			onSimulationException(e);
+		}
+	}
+	
+	@Override
+	public void stopGame() {
+		if (state != MinesweeperGameState.RUNNING) return;
+		try {
+			shouldRun = false;
+			gameThread.interrupt();
+			try {
+				if (gameThread.isAlive()) {
+					gameThread.join();
+				}
+			} catch (Exception e) {			
+			}
+			gameThread = null;
+			onTermination();
+		} catch (Exception e) {
+			onSimulationException(e);
+		}
+	}
+	
+	@Override
+	public void run() {
+		try {
+			result.setSimStartMillis(System.currentTimeMillis());
+			
+			try {
+				agent.newBoard();
+			} catch (Exception e) {
+				onAgentException(e);
+				return;
+			}
+			
+			if (visualization) {
+				Ctx.init();
+				vis = new MinesweeperFrame(board, agent);
+				vis.setLocation(50, 50);
+				vis.setVisible(true);
+			}
+			
+			result.setSimStartMillis(System.currentTimeMillis());			
+			
+			while (shouldRun && !Thread.interrupted()) {
+
+				// TIMEOUT?
+				if (timeoutMillis > 0) {
+					long now = System.currentTimeMillis();
+					long timeLeftMillis = timeoutMillis - (now - result.getSimStartMillis());
+					if (timeLeftMillis <= 0) {						
+						onTimeout();
+						return;
+					}					
+				}
+				
+				// VICTORY?
+				if (board.isVictory()) {					
+					onVictory();				 
+					return;
+				}
+				
+				// DIED?
+				if (board.boom) {
+					onDied();
+					return;
+				}
+				
+				// OTHERWISE QUERY AGENT FOR THE NEXT ACTION
+				
+				if (observe) {
+					// UPDATE UI
+					if (vis != null) {
+						vis.getPanel().updateBoard();
+					}
+					
+					// EXTRACT COMPACT VERSION OF THE BOARD FOR AI
+					Board agentBoard = board.getAgentView();
+					
+					// PRESENT BOARD TO THE AGENT
+					agent.observe(agentBoard);
+					observe = false;
+				}
+									
+				// GET AGENT ACTION
+				Action action = agent.act();
+				
+				if (action == null) continue;
+				
+				long simMovesBegin = System.currentTimeMillis();
+							
+				agentAction = action;
+	
+				// AGENT ACTION VALID?
+				if (agentAction != null && agentAction.isPossible(board)) {
+					// PERFORM THE ACTION
+					switch (agentAction.type) {
+					case FLAG:
+						board.flagTile(agentAction.tileX, agentAction.tileY);
+						break;
+					case UNFLAG:
+						board.unflagTile(agentAction.tileX, agentAction.tileY);
+						break;
+					case OPEN:
+						board.uncoverTile(agentAction.tileX, agentAction.tileY);
+						break;
+					}
+					++steps;
+					observe = true;
+				} else {
+					// TODO: should we have "verbose" version of SokobanSim?
+					//System.out.println("!!!!!!!!!!!!!!!!!");
+					//System.out.println("SokobanSim: cannot perform the action '" + agentAction.getDirection() + "'; not possible in the following board...");
+					//board.debugPrint();
+					//System.out.println("!!!!!!!!!!!!!!!!!");
+				}
+				
+				agentAction = null;
+				
+				simMovesMillis += System.currentTimeMillis() - simMovesBegin;				
+			}
+		} catch (Exception e) {
+			onSimulationException(e);
+		} finally {
+			try {
+				if (visualization) {
+					vis.getPanel().updateBoard();
+					Thread.sleep(1000);					
+				}
+			} catch (Exception e) {				
+			} finally {
+				try {
+					vis.setVisible(false);
+					vis.die();
+					vis.dispose();
+					vis = null;
+					Ctx.die();
+				} catch (Exception e) {					
+				}
+			}
+			
+		}
+	}
+
+	private void onSimulationException(Exception e) {
+		result.setSimEndMillis(System.currentTimeMillis());
+		result.setResult(MinesweeperResultType.SIMULATION_EXCEPTION);
+		result.setExecption(e);
+		try {
+			agent.stop();
+		} catch (Exception e2) {						
+		}		
+		shouldRun = false;
+		state = MinesweeperGameState.FAILED;
+	}
+
+	private void onTermination() {
+		result.setSimEndMillis(System.currentTimeMillis());
+		result.setResult(MinesweeperResultType.TERMINATED);
+		try {
+			agent.stop();
+		} catch (Exception e) {						
+		}
+		shouldRun = false;
+		state = MinesweeperGameState.TERMINATED;
+	}
+
+	private void onVictory() {
+		result.setSimEndMillis(System.currentTimeMillis());
+		result.setResult(MinesweeperResultType.VICTORY);
+		result.setSteps(steps);
+		try {
+			agent.victory();
+		} catch (Exception e) {
+			onAgentException(e);
+			return;
+		}		
+		state = MinesweeperGameState.FINISHED;
+		try {
+			agent.stop();
+		} catch (Exception e) {						
+		}
+	}
+	
+	private void onDied() {
+		result.setSimEndMillis(System.currentTimeMillis());
+		result.setResult(MinesweeperResultType.DEATH);
+		result.setSteps(steps);
+		try {
+			agent.victory();
+		} catch (Exception e) {
+			onAgentException(e);
+			return;
+		}		
+		state = MinesweeperGameState.FINISHED;
+		try {
+			agent.stop();
+		} catch (Exception e) {						
+		}
+	}
+
+	private void onTimeout() {
+		result.setSimEndMillis(System.currentTimeMillis());		
+		result.setResult(MinesweeperResultType.TIMEOUT);		
+		try {
+			agent.stop();
+		} catch (Exception e) {						
+		}		
+		shouldRun = false;		
+		state = MinesweeperGameState.FINISHED;
+	}
+
+	private void onAgentException(Exception e) {
+		result.setSimEndMillis(System.currentTimeMillis());
+		result.setResult(MinesweeperResultType.AGENT_EXCEPTION);
+		result.setExecption(e);
+		try {
+			agent.stop();
+		} catch (Exception e2) {						
+		}		
+		shouldRun = false;
+		state = MinesweeperGameState.FAILED;
+	}
+
+	@Override
+	public MinesweeperGameState getGameState() {
+		return state;
+	}
+
+	@Override
+	public MinesweeperResult getResult() {
+		if (state == MinesweeperGameState.INIT || state == MinesweeperGameState.RUNNING) return null;
+		return result;
+	}
+
+	@Override
+	public MinesweeperResult waitFinish() throws InterruptedException {
+		switch (state) {
+		case INIT:
+			return null;
+			
+		case RUNNING:
+			if (gameThread != null && gameThread.isAlive()) this.gameThread.join();
+			return getResult();
+		
+		default:
+			return result;
+		}
+	}
+	
+}
