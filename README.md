@@ -71,4 +71,4 @@ Linux (from bash, assuming you have mvn on path):
 
 ## CREDITS
 
-Using [tileset](https://opengameart.org/content/minesweeper-tile-set) done by Eugene Loza, thank you!
+Using [tileset](https://opengameart.org/content/minesweeper-tile-set) done by [Eugene Loza](https://opengameart.org/users/eugeneloza), thank you!
