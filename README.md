@@ -26,6 +26,13 @@ Minesweepr for Java (using Swing via [Clear2D](http://github.com/kefik/Clear2D))
 
 **Minesweeper4J** -> main project containing the simulator and visualizer of the game
 
+------------------------------------------------------------
+
+![alt tag](https://github.com/kefik/Minesweeper4J/raw/master/Minesweeper4J/Minesweeper-3.png)
+![alt tag](https://github.com/kefik/Minesweeper4J/raw/master/Minesweeper4J/Minesweeper-4.png)
+
+------------------------------------------------------------
+
 ## COMPILATION
 
 Compile Minesweeper4J project (from within Minesweeper4J directory), requires [Maven](https://maven.apache.org/):
