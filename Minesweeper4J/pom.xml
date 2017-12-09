@@ -15,7 +15,7 @@
 	<packaging>jar</packaging>
 
 	<name>minesweeper4j</name>
-	<url>https://github.com/kefik/Sokoban4J</url>
+	<url>https://github.com/kefik/Minesweeper4J</url>
 	
 	<properties>
 		<main.class>cz.minesweeper4j.MinesweeperConsole</main.class>
