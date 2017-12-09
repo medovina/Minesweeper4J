@@ -35,11 +35,11 @@ public class Minesweeper {
 		config.validate();
 		
 		board = new Board(config.width, config.height);
-		board.placeRandomMines(new Random(config.randomSeed), config.totalMines);
+		board.placeRandomMines(config.random, config.totalMines);
 		
 		agent = new HumanAgent();
 		
-		game = new MinesweeperSim(config.id, board, agent, config.timeoutMillis, config.visualization);
+		game = new MinesweeperSim(config.id, board, agent, config.timeoutMillis, config.visualization, config.random);
 		
 		game.startGame();
 		try {
@@ -66,22 +66,28 @@ public class Minesweeper {
 		return minesweeper.play();
 	}
 	
-	public static MinesweeperResult playAgent(String id, int width, int height, int totalMines, int randomSeed, boolean visualization, IAgent agent) {
+	public static MinesweeperResult playAgent(String id, int width, int height, int totalMines, long timeoutMillis, int randomSeed, boolean visualization, IAgent agent) {
 		MinesweeperConfig config = new MinesweeperConfig();
 		
 		config.id = id;
 		config.width = width;
 		config.height = height;
 		config.randomSeed = randomSeed;
+		config.random = new Random(randomSeed);
 		config.totalMines = totalMines;
 		config.agent = agent;
 		config.visualization = visualization;
+		config.timeoutMillis = timeoutMillis;
 		
 		return playConfig(config);
 	}
 	
+	public static MinesweeperResult playHuman(int width, int height, int totalMines, long timeoutMillis, int randomSeed) {
+		return playAgent("Human-" + width + "x" + height + "-M:" + totalMines + "-R:" + randomSeed, width, height, totalMines, timeoutMillis, randomSeed, true, new HumanAgent());		
+	}
+	
 	public static MinesweeperResult playHuman(int width, int height, int totalMines, int randomSeed) {
-		return playAgent("Human-" + width + "x" + height + "-M:" + totalMines + "-R:" + randomSeed, width, height, totalMines, randomSeed, true, new HumanAgent());		
+		return playHuman(width, height, totalMines, -1, randomSeed);		
 	}
 	
 	// ===========

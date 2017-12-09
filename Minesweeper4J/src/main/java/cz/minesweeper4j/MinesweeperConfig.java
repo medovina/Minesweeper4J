@@ -1,5 +1,7 @@
 package cz.minesweeper4j;
 
+import java.util.Random;
+
 import cz.cuni.amis.clear2d.utils.Sanitize;
 import cz.minesweeper4j.simulation.agent.IAgent;
 
@@ -21,9 +23,14 @@ public class MinesweeperConfig {
 	public int height;
 	
 	/**
-	 * Random seed to use for generating mines.
+	 * Random seed that has been used to initialize {@link #random}.
 	 */
 	public int randomSeed;
+	
+	/**
+	 * Random used for generating mines and suggesting a tile.
+	 */
+	public Random random = new Random(1);
 	
 	/**
 	 * How many mines to generate.

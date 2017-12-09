@@ -13,12 +13,12 @@ public class MouseListener implements java.awt.event.MouseListener{
 	}
 	
 	@Override
-	public void mouseClicked(MouseEvent e) {
-		panel.clicked(e.getX(), e.getY(), e.getButton() != MouseEvent.BUTTON1);
+	public void mouseClicked(MouseEvent e) {		
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
+		panel.clicked(e.getX(), e.getY(), e.getButton() != MouseEvent.BUTTON1);
 	}
 
 	@Override

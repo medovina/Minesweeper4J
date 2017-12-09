@@ -39,10 +39,13 @@ public class MinesweeperFrame extends C2DFrame {
 					getPanel().showReal = true;
 					getPanel().updateBoard();
 				}
+				getPanel().agent.keyPressed(e);
 			}
 		};
 		
 		addKeyListener(keyListener);
+		
+		setResizable(false);
 	}
 	
 	public MinesweeperPanel getPanel() {

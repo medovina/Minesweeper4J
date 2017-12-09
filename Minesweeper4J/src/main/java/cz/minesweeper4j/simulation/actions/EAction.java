@@ -4,6 +4,7 @@ public enum EAction {
 
 	OPEN,
 	FLAG,
-	UNFLAG
+	UNFLAG,
+	SUGGEST_SAFE_TILE
 	
 }

@@ -71,6 +71,8 @@ public class MinesweeperResult {
 	
 	private long simEndMillis = 0;
 	
+	private int safeTileSuggestions = 0;
+	
 	public MinesweeperResult() {		
 	}
 
@@ -174,7 +176,19 @@ public class MinesweeperResult {
 	public void setExecption(Throwable execption) {
 		this.execption = execption;
 	}
-	
+		
+	/**
+	 * How many times the agent has been suggested with a safe tile; typically the minimum number is 1 (the first suggestion at the beginning of the game).
+	 * @return
+	 */
+	public int getSafeTileSuggestions() {
+		return safeTileSuggestions;
+	}
+
+	public void setSafeTileSuggestions(int safeTileSuggestions) {
+		this.safeTileSuggestions = safeTileSuggestions;
+	}
+
 	@Override
 	public String toString() {
 		return "MinesweeperResult[" + getResult() + "]";

@@ -1,5 +1,7 @@
 package cz.minesweeper4j.simulation.agent;
 
+import java.awt.event.KeyEvent;
+
 import cz.minesweeper4j.simulation.actions.Action;
 import cz.minesweeper4j.simulation.board.oop.Board;
 
@@ -21,15 +23,7 @@ public interface IAgent {
 	 * @return
 	 */
 	public Action act();
-	
-	/**
-	 * A tile at coordinates [tileX,tileY] has been clicked; the most probably from the visualization.
-	 * @param tileX
-	 * @param tileY
-	 * @param rightBtn false == left button, right == right button
-	 */
-	public void tileClicked(int tileX, int tileY, boolean rightBtn);
-	
+		
 	/**
 	 * Agent managed to finish the board.
 	 */
@@ -44,5 +38,24 @@ public interface IAgent {
 	 * Terminate the agent as the game has finished (or has been terminated).
 	 */
 	public void stop();
+	
+	// =================
+	// DEBUGGING SUPPORT
+	// =================
+	
+	/**
+	 * A tile at coordinates [tileX,tileY] has been clicked; the most probably from the visualization.
+	 * @param tileX
+	 * @param tileY
+	 * @param rightBtn false == left button, right == right button
+	 */
+	public void tileClicked(int tileX, int tileY, boolean rightBtn);
+	
+	/**
+	 * Some key has been pressed, see {@link KeyEvent#getKeyCode()}.
+	 * @param keyCode
+	 */
+	public void keyPressed(KeyEvent event);
+
 	
 }

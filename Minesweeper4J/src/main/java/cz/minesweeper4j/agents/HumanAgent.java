@@ -1,5 +1,7 @@
 package cz.minesweeper4j.agents;
 
+import java.awt.event.KeyEvent;
+
 import cz.minesweeper4j.simulation.actions.Action;
 import cz.minesweeper4j.simulation.actions.EAction;
 import cz.minesweeper4j.simulation.agent.IAgent;
@@ -42,6 +44,18 @@ public class HumanAgent implements IAgent {
 	}
 
 	@Override
+	public void victory() {		
+	}
+
+	@Override
+	public void died() {
+	}
+
+	@Override
+	public void stop() {
+	}
+	
+	@Override
 	public void tileClicked(int tileX, int tileY, boolean rightBtn) {
 		synchronized(mutex) {
 			if (board == null) return;
@@ -59,17 +73,15 @@ public class HumanAgent implements IAgent {
 			}
 		}
 	}
-
+	
 	@Override
-	public void victory() {		
-	}
-
-	@Override
-	public void died() {
-	}
-
-	@Override
-	public void stop() {
+	public void keyPressed(KeyEvent event) {
+		if (event.getKeyCode() == KeyEvent.VK_S) {
+			synchronized(mutex) {
+				action = new Action(EAction.SUGGEST_SAFE_TILE);
+			}
+		}
+		
 	}
 
 }

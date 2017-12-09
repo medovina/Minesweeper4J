@@ -8,6 +8,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Random;
 
 import com.martiansoftware.jsap.FlaggedOption;
 import com.martiansoftware.jsap.JSAP;
@@ -304,7 +305,7 @@ public class MinesweeperConsole {
 		config.id = id;
 		config.width = width;
 		config.height = height;
-		config.randomSeed = randomSeed;
+		config.random = new Random(randomSeed);
 		config.totalMines = minesCount;
 		config.timeoutMillis = timeoutMillis;
 		config.visualization = visualiztion;
@@ -329,9 +330,9 @@ public class MinesweeperConsole {
 			PrintWriter writer = new PrintWriter(output);
 		
 			if (header) {
-				writer.println("id;width;height;minesCount;randomSeed;agent;result;steps;playTimeMillis");
+				writer.println("id;width;height;minesCount;randomSeed;agent;result;steps;advices;playTimeMillis");
 			}
-			writer.println(result.getId() + ";" + width + ";" + height + ";" + minesCount + ";" + randomSeed + ";" + agentClassString + ";" + result.getResult() + ";" + result.getSteps() + ";" + result.getSimDurationMillis());
+			writer.println(result.getId() + ";" + width + ";" + height + ";" + minesCount + ";" + randomSeed + ";" + agentClassString + ";" + result.getResult() + ";" + result.getSteps() + ";" + result.getSafeTileSuggestions() + ";" + result.getSimDurationMillis());
 			
 			writer.flush();
 			writer.close();

@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
+import cz.minesweeper4j.simulation.actions.EAction;
 import cz.minesweeper4j.simulation.agent.IAgent;
 
 /**
@@ -32,6 +33,13 @@ public class Board implements Cloneable {
 	 * Name of the level being run, not available to {@link IAgent}s.
 	 */
 	public String level;
+	
+	/**
+	 * Last suggested safe tile; guaranteed to be unique; may be null if no suggestion is possible.
+	 * If you issue {@link EAction#SUGGEST_SAFE_TILE} action, then in the next {@link IAgent#observe(Board)}, you will
+	 * have a unique (== useful) suggestion here or null if no suggestion is possible. 
+	 */
+	public Pos safeTile;
 	
 	protected Board() {
 		
@@ -63,6 +71,7 @@ public class Board implements Cloneable {
 		result.totalMines = totalMines;
 		result.boom = boom;
 		result.level = level;
+		result.safeTile = safeTile;
 		
 		for (int x = 0; x < width; ++x) {
 			for (int y = 0; y < height; ++y) {
@@ -225,6 +234,41 @@ public class Board implements Cloneable {
 	public void unflagTile(int x, int y) {
 		if (tiles[x][y].visible) return;
 		tiles[x][y].flag = false;		
+	}
+
+	/**
+	 * List of possible safe-tiles; not cloned!
+	 */
+	private List<Pos> safeTiles;
+	
+	/**
+	 * Only valid for Simulation-side board! I.e., calling this from {@link IAgent} is not fruitful!
+	 * @param random
+	 * @return
+	 */
+	public Pos suggestSafeTile(Random random) {
+		if (safeTiles == null) {
+			safeTiles = new ArrayList<Pos>();
+			for (int x = 0; x < width; ++x) {
+				for (int y = 0; y < height; ++y) {
+					if (tiles[x][y].type == ETile.FREE && tiles[x][y].mines == 0) {
+						safeTiles.add(new Pos(x,y));
+					}
+				}
+			}
+		}
+		
+		while (safeTiles.size() > 0) {
+			int index = random.nextInt(safeTiles.size());
+			Pos pos = safeTiles.remove(index);
+			if (tiles[pos.x][pos.y].visible) continue;
+			safeTile = pos;
+			return pos;
+		}
+
+		safeTile = null;
+		return null;
+		
 	}
 
 }

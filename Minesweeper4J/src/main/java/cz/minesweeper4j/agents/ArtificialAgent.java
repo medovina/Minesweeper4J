@@ -1,5 +1,7 @@
 package cz.minesweeper4j.agents;
 
+import java.awt.event.KeyEvent;
+
 import cz.minesweeper4j.simulation.actions.Action;
 import cz.minesweeper4j.simulation.agent.IAgent;
 import cz.minesweeper4j.simulation.board.oop.Board;
@@ -15,6 +17,8 @@ public abstract class ArtificialAgent implements IAgent {
 	private Object mutex = new Object();
 	
 	private RuntimeException agentException;
+	
+	protected ArtificialAgentActions actions = new ArtificialAgentActions();
 
 	@Override
 	public void newBoard() {
@@ -61,6 +65,10 @@ public abstract class ArtificialAgent implements IAgent {
 	
 	@Override
 	public void tileClicked(int tileX, int tileY, boolean rightBtn) {		
+	}
+	
+	@Override
+	public void keyPressed(KeyEvent event) {
 	}
 
 	@Override
