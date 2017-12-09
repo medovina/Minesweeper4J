@@ -15,8 +15,23 @@ import cz.minesweeper4j.simulation.board.oop.Board;
  */
 public abstract class SATAgentBase extends ArtificialAgent {
 
+	protected boolean askedForAdvice = false;
+	
+	@Override
+	public void newBoard() {
+		super.newBoard();
+		askedForAdvice = false;
+	}
+	
 	@Override
 	protected Action think(Board board) {
+		// NEW ACTION!
+		try {
+			sleep();
+		} catch (InterruptedException e) {
+			return null;
+		}
+		
 		// USE THE ADVICE IF AVAILABLE!
 		if (board.safeTilePos != null && !board.tile(board.safeTilePos).visible) {
 			return actions.open(board.safeTilePos);
@@ -33,13 +48,24 @@ public abstract class SATAgentBase extends ArtificialAgent {
 		// ITERATE OVER MODELS
 		while (true) {
 			// RUNNING THE SOLVER!
-			int[] result;
+			
+			if (problem.nVars() <= 0) {
+				// NO PROBLEM ENCODED!
+				break;
+			}
+			
+			// CHECK SATISFIABILITY
 			try {
-				// try to find next model
-				result = problem.findModel();
+				if (!problem.isSatisfiable()) {
+					break;
+				}
 			} catch (TimeoutException e) {
 				break;
 			}
+			
+			// READ MODEL
+			int[] result;			
+			result = problem.model();				
 			if (result != null) {
 				// try to decode what to do given the model
 				Action action = decodeAction(board, solver, result);
@@ -56,6 +82,13 @@ public abstract class SATAgentBase extends ArtificialAgent {
 		// -- no solution found
 		// => return some default...
 		return noSolutionFound(board);
+	}
+	
+	/**
+	 * Called at the beginning of {@link #think(Board)} to interleave actions for GUI.
+	 * @throws InterruptedException 
+	 */
+	protected void sleep() throws InterruptedException {		
 	}
 	
 	/**
@@ -89,7 +122,17 @@ public abstract class SATAgentBase extends ArtificialAgent {
 	 * @return
 	 */
 	protected Action noSolutionFound(Board board) {
-		// ASK FOR AN ADVICE AS DEFAULT...
+		if (!askedForAdvice) {
+			askedForAdvice = true;
+			return actions.advice();
+		}
+		
+		if (board.safeTilePos == null) {
+			// NO MORE ADVICES POSSIBLE
+			return null;
+		}
+		
+		// ASK FOR NEXT ADVICE AS DEFAULT...
 		return actions.advice();
 	}
 

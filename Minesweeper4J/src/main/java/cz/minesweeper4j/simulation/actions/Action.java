@@ -46,4 +46,9 @@ public class Action {
 		}
 	}
 	
+	@Override
+	public String toString() {
+		return "Action[" + type + (type == EAction.SUGGEST_SAFE_TILE ? "" : "|" + tileX + "," + tileY) + "]";
+	}
+	
 }

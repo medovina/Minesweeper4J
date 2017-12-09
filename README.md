@@ -31,6 +31,8 @@ Minesweepr for Java (using Swing via [Clear2D](http://github.com/kefik/Clear2D))
 
 **Minesweeper4J-Agents** -> example RandomAgent + SAT4J agetn stub
 
+**Minesweeper4J-Playground** -> project with custom SAT agent stub created; start experimenting with SAT agent for Minesweeper from here
+
 ------------------------------------------------------------
 
 ![alt tag](https://github.com/kefik/Minesweeper4J/raw/master/Minesweeper4J/Minesweeper-3.png)

@@ -56,7 +56,7 @@ public class Tile implements Cloneable {
 	
 	@Override
 	public String toString() {
-		return "Tile[type= " + type + ", visible=" + visible + ", flag=" + flag + "]";
+		return "Tile[" + tileX + "," + tileY + "|type= " + type + ", visible=" + visible + ", flag=" + flag + "]";
 	}
 	
 }

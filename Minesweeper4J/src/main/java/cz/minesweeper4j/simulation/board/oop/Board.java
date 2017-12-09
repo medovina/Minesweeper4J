@@ -205,12 +205,13 @@ public class Board implements Cloneable {
 		}
 		
 		// FLOOD-FILL
-		List<Tile> expand = new ArrayList<Tile>();
+		Set<Tile> expand = new HashSet<Tile>();
 		expand.add(tiles[x][y]);
 		Set<Tile> done = new HashSet<Tile>();
 		
 		while (!expand.isEmpty()) {
-			Tile tile = expand.remove(0);
+			Tile tile = expand.iterator().next();
+			expand.remove(tile);
 			done.add(tile);
 			
 			tile.visible = true;
@@ -226,7 +227,7 @@ public class Board implements Cloneable {
 					int tY = tile.tileY + dY;
 					if (tX >= 0 && tX < width && tY >= 0 && tY < height) {
 						Tile nextTile = tiles[tX][tY];
-						if (done.contains(nextTile)) continue;
+						if (done.contains(nextTile) || expand.contains(nextTile)) continue;
 						expand.add(nextTile);
 					}
 					
