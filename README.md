@@ -1,5 +1,5 @@
 # Minesweeper4J
-Minesweepr for Java (using Swing via [Clear2D](http://github.com/kefik/Clear2D) tailored for casual playing but especially for creating custom Minesweeper agents. Fully playable but truly meant for programmers for the development of Sokoban artificial players.
+Minesweepr for Java (using Swing via [Clear2D](http://github.com/kefik/Clear2D)) tailored for casual playing but especially for creating custom Minesweeper agents. Fully playable but truly meant for programmers for the development of Sokoban artificial players.
 
 **LICENSED UNDER** [CC-BY-3.0](https://creativecommons.org/licenses/by/3.0/legalcode) Please retain URL to the [Minesweeper4J](https://github.com/kefik/Minesweeper4J) in your work.
 
@@ -60,3 +60,8 @@ Linux (from bash, assuming you have mvn on path):
 	    <version>0.1.0-SNAPSHOT</version>
     </dependency>
 
+------------------------------------------------------------
+
+## CREDITS
+
+Using [tileset](https://opengameart.org/content/minesweeper-tile-set) done by Eugene Loza, thank you!
