@@ -10,15 +10,18 @@ Minesweepr for Java (using Swing via [Clear2D](http://github.com/kefik/Clear2D))
 
 1) HumanAgent and ArtificialAgent stubs; ArtificialAgent is using own thread for thinking (does not stuck GUI).
 
-2) Possible to run headless simulations (same result as visualized, only faster).
+2) "Advice" action that provides an agent with "next safe position" advice; agent performance can thus be random-free, just compare how many advices they required.
+-- press "S" when playing to obtain "next advice"
 
-3) Use "Minesweeper" static methods for quick startups of your code (both for humans and artificial agents).
+3) Possible to run headless simulations (same result as visualized, only faster).
 
-4) Mavenized (repo and dependency at the end of the page); uses some of my other stuff, but that can be easily cut off if you're considering branching.
+4) Use "Minesweeper" static methods for quick startups of your code (both for humans and artificial agents).
 
-5) Tested with Java 1.8, compilable with 1.6 as well; jars in Maven are compiled using Java 1.8.
+5) Mavenized (repo and dependency at the end of the page); uses some of my other stuff, but that can be easily cut off if you're considering branching.
 
-6) Using pure Swing via [Clear2D](http://github.com/kefik/Clear2D), no other 3rd-party libs = no complexities...
+6) Tested with Java 1.8, compilable with 1.6 as well; jars in Maven are compiled using Java 1.8.
+
+7) Using pure Swing via [Clear2D](http://github.com/kefik/Clear2D), no other 3rd-party libs = no complexities...
 
 ------------------------------------------------------------
 
