@@ -37,7 +37,7 @@ public class Minesweeper {
 		board = new Board(config.width, config.height);
 		board.placeRandomMines(config.random, config.totalMines);
 		
-		agent = new HumanAgent();
+		agent = config.agent;
 		
 		game = new MinesweeperSim(config.id, board, agent, config.timeoutMillis, config.visualization, config.random);
 		

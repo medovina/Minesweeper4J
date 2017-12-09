@@ -169,12 +169,12 @@ public class MinesweeperPanel extends C2DPanelStandalone {
 			return;
 		}
 		
-		if (board.safeTile == null) {
+		if (board.safeTilePos == null) {
 			free.setEnabled(false);
 		} else {
 			free.setEnabled(true);
-			free.pos.x = 24 * board.safeTile.x;
-			free.pos.y = 24 * board.safeTile.y;
+			free.pos.x = 24 * board.safeTilePos.x;
+			free.pos.y = 24 * board.safeTilePos.y;
 		}
 		
 	}

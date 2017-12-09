@@ -39,7 +39,7 @@ public class Board implements Cloneable {
 	 * If you issue {@link EAction#SUGGEST_SAFE_TILE} action, then in the next {@link IAgent#observe(Board)}, you will
 	 * have a unique (== useful) suggestion here or null if no suggestion is possible. 
 	 */
-	public Pos safeTile;
+	public Pos safeTilePos;
 	
 	protected Board() {
 		
@@ -71,7 +71,7 @@ public class Board implements Cloneable {
 		result.totalMines = totalMines;
 		result.boom = boom;
 		result.level = level;
-		result.safeTile = safeTile;
+		result.safeTilePos = safeTilePos;
 		
 		for (int x = 0; x < width; ++x) {
 			for (int y = 0; y < height; ++y) {
@@ -90,6 +90,15 @@ public class Board implements Cloneable {
 	 */
 	public Tile tile(int x, int y) {
 		return tiles[x][y];
+	}
+	
+	/**
+	 * Returns tile on [{@link Pos#x}, {@link Pos#y}].
+	 * @param pos
+	 * @return
+	 */
+	public Tile tile(Pos pos) {
+		return tiles[pos.x][pos.y];
 	}
 	
 	/**
@@ -262,11 +271,11 @@ public class Board implements Cloneable {
 			int index = random.nextInt(safeTiles.size());
 			Pos pos = safeTiles.remove(index);
 			if (tiles[pos.x][pos.y].visible) continue;
-			safeTile = pos;
+			safeTilePos = pos;
 			return pos;
 		}
 
-		safeTile = null;
+		safeTilePos = null;
 		return null;
 		
 	}

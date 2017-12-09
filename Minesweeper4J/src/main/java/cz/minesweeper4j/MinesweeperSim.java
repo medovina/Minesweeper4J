@@ -117,7 +117,7 @@ public class MinesweeperSim implements IMinesweeperGame, Runnable {
 			result.setSimStartMillis(System.currentTimeMillis());
 			
 			// FIRST SUGGESTION
-			if (board.safeTile == null) {
+			if (board.safeTilePos == null) {
 				board.suggestSafeTile(random);
 				safeTileSuggestions += 1;
 			}
