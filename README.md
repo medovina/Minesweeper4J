@@ -56,15 +56,9 @@ Linux (from bash, assuming you have mvn on path):
 ## MAVEN DEPENDENCY
 
     <dependency>
-        <groupId>cz.sokoban4j</groupId>
-        <artifactId>sokoban4j</artifactId>
+        <groupId>cz.minesweeper4j</groupId>
+        <artifactId>minesweeper4j</artifactId>
         <version>0.1.0-SNAPSHOT</version>
-    </dependency>
-    
-    <dependency>
-        <groupId>cz.sokoban4j</groupId>
-	    <artifactId>sokoban4j-tournament</artifactId>
-	    <version>0.1.0-SNAPSHOT</version>
     </dependency>
 
 ------------------------------------------------------------
