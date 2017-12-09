@@ -29,6 +29,8 @@ Minesweepr for Java (using Swing via [Clear2D](http://github.com/kefik/Clear2D))
 
 **Minesweeper4J** -> main project containing the simulator and visualizer of the game
 
+**Minesweeper4J-Agents** -> example RandomAgent + SAT4J agetn stub
+
 ------------------------------------------------------------
 
 ![alt tag](https://github.com/kefik/Minesweeper4J/raw/master/Minesweeper4J/Minesweeper-3.png)
