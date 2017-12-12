@@ -56,7 +56,9 @@ public class PrologAgent extends PrologAgentBase {
 	public static void main(String[] args) {		
 		IAgent agent = new SATAgent(); 
 		
+		// switch true to false to disable visualization...
 		Minesweeper.playAgent("PrologAgent", 5, 5, 5, 30 * 60 * 1000, 1, true, agent);
+		
 		//Minesweeper.playAgent("PrologAgent", 10, 10, 10, 30 * 60 * 1000, 1, true, agent);	
 	}
 
