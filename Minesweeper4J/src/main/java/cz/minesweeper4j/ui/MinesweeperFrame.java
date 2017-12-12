@@ -29,7 +29,7 @@ public class MinesweeperFrame extends C2DFrame {
 			public void keyReleased(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 					getPanel().showReal = false;
-					getPanel().updateBoard();
+					getPanel().updateBoardView();
 				}
 			}
 			
@@ -37,7 +37,7 @@ public class MinesweeperFrame extends C2DFrame {
 			public void keyPressed(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_SPACE) {
 					getPanel().showReal = true;
-					getPanel().updateBoard();
+					getPanel().updateBoardView();
 				}
 				getPanel().agent.keyPressed(e);
 			}

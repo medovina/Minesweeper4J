@@ -1,10 +1,11 @@
 package cz.minesweeper4j.ui;
 
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
 
 import cz.minesweeper4j.simulation.agent.IAgent;
 
-public class MouseListener implements java.awt.event.MouseListener{
+public class MouseListener implements java.awt.event.MouseListener, MouseMotionListener{
 
 	private MinesweeperPanel panel;
 
@@ -18,7 +19,7 @@ public class MouseListener implements java.awt.event.MouseListener{
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		panel.clicked(e.getX(), e.getY(), e.getButton() != MouseEvent.BUTTON1);
+		panel.mouseClicked(e.getX(), e.getY(), e.getButton() != MouseEvent.BUTTON1);
 	}
 
 	@Override
@@ -31,6 +32,17 @@ public class MouseListener implements java.awt.event.MouseListener{
 
 	@Override
 	public void mouseExited(MouseEvent e) {
+	}
+
+	@Override
+	public void mouseDragged(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseMoved(MouseEvent e) {
+		panel.mouseMoved(e.getX(), e.getY());
 	}
 
 }

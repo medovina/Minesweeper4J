@@ -247,9 +247,14 @@ public class Board implements Cloneable {
 	}
 
 	/**
-	 * List of possible safe-tiles; not cloned!
+	 * List of possible safe-tiles with 0-mines around; not cloned!
 	 */
-	private List<Pos> safeTiles;
+	private List<Pos> safeTiles0;
+	
+	/**
+	 * List of possible safe-tiles with 1+mines around; not cloned!
+	 */
+	private List<Pos> safeTilesNum;
 	
 	/**
 	 * Only valid for Simulation-side board! I.e., calling this from {@link IAgent} is not fruitful!
@@ -257,28 +262,60 @@ public class Board implements Cloneable {
 	 * @return
 	 */
 	public Pos suggestSafeTile(Random random) {
-		if (safeTiles == null) {
-			safeTiles = new ArrayList<Pos>();
+		if (safeTiles0 == null) {
+			safeTiles0 = new ArrayList<Pos>();
+			safeTilesNum = new ArrayList<Pos>();
 			for (int x = 0; x < width; ++x) {
 				for (int y = 0; y < height; ++y) {
-					if (tiles[x][y].type == ETile.FREE && tiles[x][y].mines == 0) {
-						safeTiles.add(new Pos(x,y));
+					if (tiles[x][y].type == ETile.FREE) {
+						if (tiles[x][y].mines == 0) {
+							safeTiles0.add(new Pos(x,y));
+						} else
+						if (tiles[x][y].mines > 0) {
+							safeTilesNum.add(new Pos(x,y));
+						}
 					}
+					
 				}
 			}
 		}
 		
-		while (safeTiles.size() > 0) {
-			int index = random.nextInt(safeTiles.size());
-			Pos pos = safeTiles.remove(index);
+		while (safeTiles0.size() > 0) {
+			int index = random.nextInt(safeTiles0.size());
+			Pos pos = safeTiles0.remove(index);
+			if (tiles[pos.x][pos.y].visible) continue;
+			safeTilePos = pos;
+			return pos;
+		}
+		
+		while (safeTilesNum.size() > 0) {
+			int index = random.nextInt(safeTilesNum.size());
+			Pos pos = safeTilesNum.remove(index);
 			if (tiles[pos.x][pos.y].visible) continue;
 			safeTilePos = pos;
 			return pos;
 		}
 
 		safeTilePos = null;
-		return null;
-		
+		return null;		
+	}
+	
+	/**
+	 * Debug-print of the board into {@link System#out}.
+	 * @param board
+	 */
+	public void printBoard() {
+		for (int y = 0; y < height; ++y) {
+			for (int x = 0; x < width; ++x) {
+				Tile tile = tile(x, y);
+				if (tile.visible) {					
+					System.out.print(tile.mines);
+				} else {
+					System.out.print(tile.type.debugChar);
+				}							
+			}
+			System.out.println();
+		}
 	}
 
 }

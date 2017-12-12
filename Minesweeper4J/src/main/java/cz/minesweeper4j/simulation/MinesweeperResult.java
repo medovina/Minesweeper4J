@@ -191,7 +191,7 @@ public class MinesweeperResult {
 
 	@Override
 	public String toString() {
-		return "MinesweeperResult[" + getResult() + "]";
+		return "MinesweeperResult[" + getResult() + "|steps=" + steps + ",#advices=" + safeTileSuggestions + "]";
 	}
 	
 }

@@ -7,6 +7,7 @@ import cz.cuni.amis.clear2d.engine.C2DPanelStandalone;
 import cz.cuni.amis.clear2d.engine.fonts.C2DFonts;
 import cz.cuni.amis.clear2d.engine.iface.IDrawable;
 import cz.cuni.amis.clear2d.engine.math.Vector2;
+import cz.cuni.amis.clear2d.engine.prefabs.FPS;
 import cz.cuni.amis.clear2d.engine.prefabs.Label;
 import cz.cuni.amis.clear2d.engine.prefabs.Quad;
 import cz.cuni.amis.clear2d.engine.prefabs.Sprite;
@@ -24,7 +25,7 @@ public class MinesweeperPanel extends C2DPanelStandalone {
 	
 	private Board board;
 	
-	private Sprite[][] sprites;
+	private Sprite[][] boardView;
 
 	protected IAgent agent;
 	
@@ -35,9 +36,13 @@ public class MinesweeperPanel extends C2DPanelStandalone {
 	
 	private Quad free;
 	
+	private Quad selection;
+	
 	protected boolean showReal = false;
 
 	private KeyListener keyListener;
+	
+	private FPS fps;
 
 	public MinesweeperPanel(Board board, IAgent agent) {
 		super(board.width * 24, board.height * 24, new Color(217, 244, 255));
@@ -47,6 +52,7 @@ public class MinesweeperPanel extends C2DPanelStandalone {
 		this.agent = agent;
 		mouseListener = new MouseListener(this);
 		addMouseListener(mouseListener);	
+		addMouseMotionListener(mouseListener);
 		
 		this.victory = new Label(C2DFonts.inconcolata_12px_green, "VICTORY!", Color.BLACK, Color.GREEN);
 		this.boom = new Label(C2DFonts.inconcolata_12px_red, "BOOM!", Color.BLACK, Color.RED);
@@ -64,18 +70,26 @@ public class MinesweeperPanel extends C2DPanelStandalone {
 		free.init(24, 24, new Color(0, 0, 0, 0), Color.WHITE);
 		scene.root.addChild(free);
 		free.setEnabled(false);
+		
+		selection = new Quad();
+		selection.init(24, 24, new Color(0, 0, 0, 0), Color.YELLOW);
+		scene.root.addChild(selection);
+		selection.setEnabled(false);
+		
+//		fps = new FPS(C2DFonts.inconcolata_10px_black);
+//		scene.root.addChild(fps);
 	}
 
 	private void initBoard(Board board) {
 		this.board = board;
 		
-		sprites = new Sprite[board.width][board.height];
+		boardView = new Sprite[board.width][board.height];
 		
 		for (int x = 0; x < board.width; ++x) {
 			for (int y = 0; y < board.height; ++y) {
-				sprites[x][y] = new Sprite(getTexture(board.tile(x,  y)));
-				sprites[x][y].pos = new Vector2(x * 24, y * 24);
-				scene.root.addChild(sprites[x][y]);
+				boardView[x][y] = new Sprite(getTexture(board.tile(x,  y)));
+				boardView[x][y].pos = new Vector2(x * 24, y * 24);
+				scene.root.addChild(boardView[x][y]);
 			}
 		}
 	}
@@ -137,13 +151,13 @@ public class MinesweeperPanel extends C2DPanelStandalone {
 		return Ctx.atlas.getSubtexture(getRealTextureEnum(tile).texture);
 	}
 	
-	protected void clicked(int mouseX, int mouseY, boolean rightBtn) {
+	protected void mouseClicked(int mouseX, int mouseY, boolean rightBtn) {
 		if (board.boom) return;
 		if (board.isVictory()) return;
 		
 		if (agent != null) {
-			int tileX = mouseX / 24;
-			int tileY = mouseY / 24;
+			int tileX = (mouseX-4) / 24;
+			int tileY = (mouseY-4) / 24;
 			if (tileX < 0) tileX = 0;
 			else if (tileX >= board.width) tileX = board.width;
 			if (tileY < 0) tileY = 0;
@@ -152,10 +166,27 @@ public class MinesweeperPanel extends C2DPanelStandalone {
 		}
 	}
 	
-	public void updateBoard() {
+	protected void mouseMoved(int mouseX, int mouseY) {
+		if (board.boom) return;
+		if (board.isVictory()) return;
+		
+		if (agent != null) {
+			int tileX = (mouseX-4) / 24;
+			int tileY = (mouseY-4) / 24;
+			if (tileX < 0) tileX = 0;
+			else if (tileX >= board.width) tileX = board.width;
+			if (tileY < 0) tileY = 0;
+			else if (tileY >= board.height) tileY = board.height;
+			selection.setEnabled(true);
+			selection.pos.x = tileX * 24;
+			selection.pos.y = tileY * 24;
+		}
+	}
+	
+	public void updateBoardView() {
 		for (int x = 0; x < board.width; ++x) {
 			for (int y = 0; y < board.height; ++y) {
-				sprites[x][y].cSprite.texture = getTexture(board.tile(x, y));
+				boardView[x][y].cSprite.texture = getTexture(board.tile(x, y));
 			}
 		}
 		

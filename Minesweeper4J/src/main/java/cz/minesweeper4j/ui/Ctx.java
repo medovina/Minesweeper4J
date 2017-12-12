@@ -21,7 +21,7 @@ public class Ctx {
 		inited = true;
 		
 		Clear2DConfig cfg = new Clear2DConfig();
-		cfg.fps = 30;
+		cfg.fps = 20;
 		
 		C2DFonts.init();
 		

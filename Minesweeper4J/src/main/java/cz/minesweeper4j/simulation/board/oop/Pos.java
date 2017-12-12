@@ -10,4 +10,9 @@ public class Pos {
 		this.y = y;
 	}
 	
+	@Override
+	public String toString() {
+		return "Pos[" + x + "," + y + "]";
+	}
+	
 }

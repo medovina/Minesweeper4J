@@ -134,7 +134,7 @@ public class MinesweeperSim implements IMinesweeperGame, Runnable {
 				vis = new MinesweeperFrame(board, agent);
 				vis.setLocation(50, 50);
 				vis.setVisible(true);
-				vis.getPanel().updateBoard();
+				vis.getPanel().updateBoardView();
 			}
 			
 			result.setSimStartMillis(System.currentTimeMillis());			
@@ -173,7 +173,7 @@ public class MinesweeperSim implements IMinesweeperGame, Runnable {
 				if (observe) {
 					// UPDATE UI
 					if (vis != null) {
-						vis.getPanel().updateBoard();
+						vis.getPanel().updateBoardView();
 					}
 					
 					// EXTRACT COMPACT VERSION OF THE BOARD FOR AI
@@ -214,11 +214,14 @@ public class MinesweeperSim implements IMinesweeperGame, Runnable {
 					++steps;
 					observe = true;
 				} else {
-					// TODO: should we have "verbose" version of SokobanSim?
-					//System.out.println("!!!!!!!!!!!!!!!!!");
-					//System.out.println("SokobanSim: cannot perform the action '" + agentAction.getDirection() + "'; not possible in the following board...");
-					//board.debugPrint();
-					//System.out.println("!!!!!!!!!!!!!!!!!");
+					// TODO: should we have "verbose" version of MinesweeperSim?
+					
+					// PENALIZATION
+					try {
+						Thread.sleep(16);
+					} catch (Exception e) {						
+					}
+					
 				}
 				
 				agentAction = null;
@@ -230,7 +233,7 @@ public class MinesweeperSim implements IMinesweeperGame, Runnable {
 		} finally {
 			try {
 				if (visualization) {
-					vis.getPanel().updateBoard();
+					vis.getPanel().updateBoardView();
 					Thread.sleep(1000);					
 				}
 			} catch (Exception e) {				
