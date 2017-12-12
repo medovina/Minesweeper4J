@@ -4,6 +4,7 @@ import org.sat4j.minisat.SolverFactory;
 import org.sat4j.specs.IProblem;
 import org.sat4j.specs.ISolver;
 import org.sat4j.specs.TimeoutException;
+import org.sat4j.tools.ModelIterator;
 
 import cz.minesweeper4j.simulation.actions.Action;
 import cz.minesweeper4j.simulation.board.oop.Board;
@@ -38,50 +39,31 @@ public abstract class SATAgentBase extends ArtificialAgent {
 		}
 		
 		// CREATE NEW SAT SOLVER
-		ISolver solver = newSATSolver(board);		
+		ModelIterator solver = new ModelIterator(newSATSolver(board));		
 		
 		// ENCODE THE PROBLEM
 		encodeProblem(board, solver);
 		
-		IProblem problem = (IProblem)solver;
-		
-		// ITERATE OVER MODELS
-		while (true) {
-			// RUNNING THE SOLVER!
+		if (solver.nVars() <= 0) {
+			// NO PROBLEM ENCODED!
+			return problemNotSatisfiable(board);
+		}
 			
-			if (problem.nVars() <= 0) {
-				// NO PROBLEM ENCODED!
-				break;
-			}
-			
-			// CHECK SATISFIABILITY
-			try {
-				if (!problem.isSatisfiable()) {
-					break;
-				}
-			} catch (TimeoutException e) {
-				break;
-			}
-			
-			// READ MODEL
-			int[] result;			
-			result = problem.model();				
-			if (result != null) {
-				// try to decode what to do given the model
-				Action action = decodeAction(board, solver, result);
-				if (action != null) {
-					return action;
-				}
-			} else {
-				// NO MORE SOLUTIONS
-				break;
-			}
+		// CHECK SATISFIABILITY
+		boolean satisfiable = false;
+		try {
+			satisfiable = solver.isSatisfiable();
+		} catch (TimeoutException e) {
+			e.printStackTrace();
 		}
 		
-		// FAIL SAFE
-		// -- no solution found
-		// => return some default...
-		return noSolutionFound(board);
+		if (satisfiable) {
+			Action action = problemSatisfiable(board, solver);
+			if (action != null) return action;
+			return noActionReasonable(board);
+		} else {
+			return problemNotSatisfiable(board);
+		}
 	}
 	
 	/**
@@ -96,10 +78,10 @@ public abstract class SATAgentBase extends ArtificialAgent {
 	 * @param board
 	 * @return
 	 */
-	protected ISolver newSATSolver(Board board) {
+	protected ModelIterator newSATSolver(Board board) {
 		ISolver satSolver = SolverFactory.newDefault();
 		satSolver.setTimeout(3600); // 1 hour timeout
-		return satSolver;
+		return new ModelIterator(satSolver);
 	}
 
 	/**
@@ -107,21 +89,43 @@ public abstract class SATAgentBase extends ArtificialAgent {
 	 * @param satSolver
 	 */
 	protected abstract void encodeProblem(Board board, ISolver solver);
-
+	
 	/**
-	 * Try to extract "what to do" given the "result" computed by "solver".
+	 * The problem {@link #encodeProblem(Board, ISolver)}ed is satisfiable; generate action what to do.
+	 * If you return 'null', we fallback to {@link #noActionReasonable(Board)}.
+	 * @param board
 	 * @param solver
-	 * @param result non-null, see {@link IProblem#findModel()}
-	 * @return null == cannot do anything, non-null == do this action
+	 * @return
 	 */
-	protected abstract Action decodeAction(Board board, ISolver solver, int[] result);
+	protected abstract Action problemSatisfiable(Board board, ModelIterator solver);
+	
 
 	/**
 	 * No solution given the problem encoding done in {@link #encodeProblem(Board, ISolver)} found; provide some default.
 	 * @param board
 	 * @return
 	 */
-	protected Action noSolutionFound(Board board) {
+	protected Action problemNotSatisfiable(Board board) {
+		if (!askedForAdvice) {
+			askedForAdvice = true;
+			return actions.advice();
+		}
+		
+		if (board.safeTilePos == null) {
+			// NO MORE ADVICES POSSIBLE
+			return null;
+		}
+		
+		// ASK FOR NEXT ADVICE AS DEFAULT...
+		return actions.advice();
+	}
+	
+	/**
+	 * Called if the problem is satisfiable, but you cannot reason any action out of it.
+	 * @param board
+	 * @return
+	 */
+	protected Action noActionReasonable(Board board) {
 		if (!askedForAdvice) {
 			askedForAdvice = true;
 			return actions.advice();

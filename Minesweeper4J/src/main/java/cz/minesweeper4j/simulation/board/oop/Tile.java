@@ -46,7 +46,7 @@ public class Tile implements Cloneable {
 		result.type = type;
 		result.visible = visible;
 		result.flag = flag;
-		result.mines = result.mines;
+		result.mines = mines;
 		
 		result.tileX = tileX;
 		result.tileY = tileY;
@@ -56,7 +56,7 @@ public class Tile implements Cloneable {
 	
 	@Override
 	public String toString() {
-		return "Tile[" + tileX + "," + tileY + "|type= " + type + ", visible=" + visible + ", flag=" + flag + "]";
+		return "Tile[" + tileX + "," + tileY + "|type= " + type + ", visible=" + visible + ", flag=" + flag + ", mines=" + mines +"]";
 	}
 	
 }

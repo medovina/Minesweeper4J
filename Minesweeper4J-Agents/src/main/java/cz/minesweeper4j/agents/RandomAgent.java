@@ -5,10 +5,12 @@ import java.util.List;
 import java.util.Random;
 
 import cz.minesweeper4j.Minesweeper;
+import cz.minesweeper4j.simulation.MinesweeperResult;
 import cz.minesweeper4j.simulation.actions.Action;
 import cz.minesweeper4j.simulation.agent.IAgent;
 import cz.minesweeper4j.simulation.board.oop.Board;
 import cz.minesweeper4j.simulation.board.oop.Pos;
+import cz.minesweeper4j.simulation.board.oop.Tile;
 
 public class RandomAgent extends ArtificialAgent {
 	
@@ -21,6 +23,9 @@ public class RandomAgent extends ArtificialAgent {
 
 	@Override
 	protected Action think(Board board) {
+		System.out.println("--- RANDOM AGENT.THINK ---");
+		printBoard(board);
+		
 		if (sleepInterleveMillis > 0) {
 			try {
 				Thread.sleep(sleepInterleveMillis);
@@ -67,10 +72,26 @@ public class RandomAgent extends ArtificialAgent {
 		return actions.open(unknowns.get(random.nextInt(unknowns.size())));		
 	}
 	
+	protected void printBoard(Board board) {
+		for (int x = 0; x < board.width; ++x) {
+			for (int y = 0; y < board.height; ++y) {
+				Tile tile = board.tile(x, y);
+				if (tile.visible) {					
+					System.out.print(tile.mines);
+				} else {
+					System.out.print("?");
+				}
+				
+			}
+			System.out.println();
+		}
+	}
+	
 	public static void main(String[] args) {
 		IAgent agent = new RandomAgent(); 
 		
-		Minesweeper.playAgent("RandomAgent", 10, 10, 10, 60 * 1000, 1, true, agent);		
+		MinesweeperResult result = Minesweeper.playAgent("RandomAgent", 10, 10, 10, 60 * 1000, 1, false, agent);
+		System.out.println(result);
 	}
 
 }
