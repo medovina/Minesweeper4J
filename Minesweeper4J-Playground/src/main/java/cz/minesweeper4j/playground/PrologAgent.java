@@ -38,7 +38,7 @@ public class PrologAgent extends PrologAgentBase {
 		// TODO: board info changed, you may infer delta information
 		for (int x = 0; x < board.width; ++x) {
 			for (int y = 0; y < board.height; ++y) {
-				if (board.tile(x, y).visible != board.tile(x,y).visible) {
+				if (board.tile(x, y).visible != previousBoard.tile(x,y).visible) {
 					// NEW TILE UNCOVERED!
 				}
 			}

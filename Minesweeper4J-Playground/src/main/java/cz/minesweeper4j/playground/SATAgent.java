@@ -26,10 +26,11 @@ public class SATAgent extends SATAgentBase {
 	}
 	
 	@Override
-	protected void satEncodeProblem(ISolver solver, Board board, Board previousBoard) {		
+	protected void satEncodeProblem(ISolver solver, Board board, Board previousBoard) {
 		// TODO: given the board, encode the problem for the solver
 		//		 see: http://www.sat4j.org/howto.php		
 		//       note that you have interesting information in this.unknowns and this.border pre-computed
+		
 	}
 
 	@Override

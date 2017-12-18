@@ -38,7 +38,9 @@ public class AdviceAgent extends ArtificialAgent {
 	public static void main(String[] args) {
 		IAgent agent = new AdviceAgent(); 
 		
-		MinesweeperResult result = Minesweeper.playAgent("AdviceAgent", 15, 15, 20, 60 * 1000, 1, true, agent);
+		int masterRandomSeed = 10;
+		
+		MinesweeperResult result = Minesweeper.playAgent("AdviceAgent", 15, 15, 20, 60 * 1000, masterRandomSeed, true, agent);
 		System.out.println(result);
 	}
 

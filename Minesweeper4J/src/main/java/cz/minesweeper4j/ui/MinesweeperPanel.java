@@ -159,9 +159,9 @@ public class MinesweeperPanel extends C2DPanelStandalone {
 			int tileX = (mouseX-4) / 24;
 			int tileY = (mouseY-4) / 24;
 			if (tileX < 0) tileX = 0;
-			else if (tileX >= board.width) tileX = board.width;
+			else if (tileX >= board.width) tileX = board.width-1;
 			if (tileY < 0) tileY = 0;
-			else if (tileY >= board.height) tileY = board.height;
+			else if (tileY >= board.height) tileY = board.height-1;
 			agent.tileClicked(tileX, tileY, rightBtn);
 		}
 	}
