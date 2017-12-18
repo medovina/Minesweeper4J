@@ -42,6 +42,7 @@ public abstract class ArtificialAgentBase implements IAgent {
 			// => EXECUTE
 			Action action = this.action;
 			this.action = null;
+			System.out.println("EXECUTING: " + action);
 			return action;
 		}
 		
