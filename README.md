@@ -39,7 +39,7 @@ Minesweepr for Java (using Swing via [Clear2D](http://github.com/kefik/Clear2D))
 
 **Minesweeper4J-Agents** -> example [AdviceAgent](https://github.com/kefik/Minesweeper4J/blob/master/Minesweeper4J-Agents/src/main/java/cz/minesweeper4j/agents/AdviceAgent.java), [RandomAgent1](https://github.com/kefik/Minesweeper4J/blob/master/Minesweeper4J-Agents/src/main/java/cz/minesweeper4j/agents/RandomAgent1.java), [RandomAgent2](https://github.com/kefik/Minesweeper4J/blob/master/Minesweeper4J-Agents/src/main/java/cz/minesweeper4j/agents/RandomAgent2.java) + [SAT4J agent](https://github.com/kefik/Minesweeper4J/blob/master/Minesweeper4J-Agents/src/main/java/cz/minesweeper4j/agents/SATAgentBase.java) stub and [Prolog agent](https://github.com/kefik/Minesweeper4J/blob/master/Minesweeper4J-Agents/src/main/java/cz/minesweeper4j/agents/PrologAgentBase.java) stub
 
-**Minesweeper4J-Playground** -> project with custom SAT and Prolog agent stubs; start experimenting with SAT-based and/or Prolog-based agent for Minesweeper from here
+**Minesweeper4J-Playground** -> project with custom [SATAgent](https://github.com/kefik/Minesweeper4J/blob/master/Minesweeper4J-Playground/src/main/java/cz/minesweeper4j/playground/SATAgent.java) and [PrologAgent](https://github.com/kefik/Minesweeper4J/blob/master/Minesweeper4J-Playground/src/main/java/cz/minesweeper4j/playground/PrologAgent.java) stubs; start experimenting with SAT-based and/or Prolog-based agent for Minesweeper from here
 
 ------------------------------------------------------------
 
