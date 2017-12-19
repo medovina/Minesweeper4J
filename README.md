@@ -23,7 +23,7 @@ Minesweepr for Java (using Swing via [Clear2D](http://github.com/kefik/Clear2D))
     * If you just want to play a quick game as a human, run [Main](https://github.com/kefik/Minesweeper4J/blob/master/Minesweeper4J/src/main/java/cz/minesweeper4j/Main.java) class.
     * If you want to see some agent in action, run either [AdviceAgent](https://github.com/kefik/Minesweeper4J/blob/master/Minesweeper4J-Agents/src/main/java/cz/minesweeper4j/agents/AdviceAgent.java) or [RandomAgent1](https://github.com/kefik/Minesweeper4J/blob/master/Minesweeper4J-Agents/src/main/java/cz/minesweeper4j/agents/RandomAgent1.java).
 
-6) Stubs for SAT-based agents (using [SAT4J](http://www.sat4j.org/) and Prolog-based agents (using [tuProlog](https://bitbucket.org/tuprologteam/tuprolog)).
+6) Stubs for SAT-based agents (using [SAT4J](http://www.sat4j.org/)) and Prolog-based agents (using [tuProlog](https://bitbucket.org/tuprologteam/tuprolog)).
 
 7) Mavenized (repo and dependency at the end of the page); uses some of my other stuff, but that can be easily cut off if you're considering branching.
 
