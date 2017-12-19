@@ -36,9 +36,24 @@ public abstract class ArtificialAgent extends ArtificialAgentBase {
 	protected List<Pos> unknowns;
 	
 	/**
-	 * List of tiles that are currently not {@link Tile#visible} but they have at least one {@link Tile#visible} neighbour tile.
+	 * List of tiles that are currently not {@link Tile#visible} but they have at least one {@link Tile#visible} neighbor tile.
 	 */
-	protected List<Pos> border;
+	protected List<Pos> borderUnknowns;
+	
+	/**
+	 * List of tiles that are currently {@link Tile#visible}, they have {@link Tile#mines} &gt; 1 and have at least one non-{@link Tile#visible} neighbor tile.
+	 */
+	protected List<Pos> borderNumbers;
+	
+	/**
+	 * Board the {@link #thinkImpl(Board, Board)} seen previously, null during the first {@link #thinkImpl(Board, Board)}.
+	 */
+	protected Board previousBoard;
+	
+	/**
+	 * How many tiles are flagged as having a mine.
+	 */
+	protected int flaggedTileCount;
 	
 	@Override
 	public void observe(Board board) {
@@ -47,10 +62,15 @@ public abstract class ArtificialAgent extends ArtificialAgentBase {
 		// COMPUTE UNKNOWN & BORDER SPACES
 		if (unknowns == null) unknowns = new ArrayList<Pos>(board.width * board.height);
 		else unknowns.clear();
-		if (border == null) border = new ArrayList<Pos>(board.width * board.height);
-		else border.clear();
+		if (borderUnknowns == null) borderUnknowns = new ArrayList<Pos>(board.width * board.height);
+		else borderUnknowns.clear();
+		if (borderNumbers == null) borderNumbers = new ArrayList<Pos>(board.width * board.height);
+		else borderNumbers.clear();
 		
+		// RESET FLAGGED TILE COUNT
+		flaggedTileCount = 0;
 		
+		// ITERATE OVER TILES AND QUERY THEM
 		for (int x = 0; x < board.width; ++x) {
 			for (int y = 0; y < board.height; ++y) {
 				Tile tile = board.tile(x, y);
@@ -68,7 +88,7 @@ public abstract class ArtificialAgent extends ArtificialAgentBase {
 							if (tX >= 0 && tX < board.width && tY >= 0 && tY < board.height) {
 								Tile nextTile = board.tile(tX, tY);
 								if (nextTile.visible) {
-									border.add(new Pos(x, y));
+									borderUnknowns.add(new Pos(x, y));
 									isBorder = true;
 									break;
 								}
@@ -76,15 +96,36 @@ public abstract class ArtificialAgent extends ArtificialAgentBase {
 							
 						}				
 					}	
-					
+				} else
+				if (tile.mines > 0) {
+					// TEST WHETHER IT IS A BORDER TILE
+					boolean isBorder = false;
+					for (int dX = -1; dX < 2; ++dX) {
+						if (isBorder) break;
+						for (int dY = -1; dY < 2; ++dY) {
+							int tX = tile.tileX + dX;
+							int tY = tile.tileY + dY;
+							if (tX >= 0 && tX < board.width && tY >= 0 && tY < board.height) {
+								Tile nextTile = board.tile(tX, tY);
+								if (!nextTile.visible) {
+									borderNumbers.add(new Pos(x, y));
+									isBorder = true;
+									break;
+								}
+							}
+							
+						}				
+					}	
+				} else
+				if (tile.flag) {
+					flaggedTileCount += 1;
 				}
 			}
 		}
-		
 	}
 
 	@Override
-	protected final Action think(Board board, Board previousBoard) {
+	protected final Action think(Board board) {
 		System.out.println("--- " + getClass().getSimpleName() + " THINK ---");
 		
 		// SLEEPING
@@ -117,11 +158,18 @@ public abstract class ArtificialAgent extends ArtificialAgentBase {
 				}
 			}
 			// ???
-			throw new RuntimeException("Should not reach here; board.totalMines invalid?");
+			throw new RuntimeException("Should not reach here; solution invalid? board.totalMines invalid?");
 		}
 		
 		// DO THE THINKING
-		return thinkImpl(board, previousBoard);
+		Action result = thinkImpl(board, previousBoard);
+		
+		// SAVE BOARD thinkImpl HAS SEEN
+		// -- mind the fact, that the next think() iteration may not invoke thinkImpl() 
+		//    due to the fact we're auto-using suggestions
+		previousBoard = board;
+		
+		return result;
 	}
 	
 	/**
@@ -133,7 +181,7 @@ public abstract class ArtificialAgent extends ArtificialAgentBase {
 	 * 
 	 * Thinks already computed:
 	 * 1) {@link #unknowns}
-	 * 2) {@link #border}
+	 * 2) {@link #borderUnknowns}
 	 * 
 	 * @param board current state of the board
 	 * @param previousBoard a board from previous think, may be null during the first think tick

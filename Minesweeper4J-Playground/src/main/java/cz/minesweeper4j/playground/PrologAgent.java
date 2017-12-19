@@ -4,6 +4,7 @@ import alice.tuprolog.Prolog;
 import cz.minesweeper4j.Minesweeper;
 import cz.minesweeper4j.agents.AdviceAgent;
 import cz.minesweeper4j.agents.PrologAgentBase;
+import cz.minesweeper4j.simulation.MinesweeperResult;
 import cz.minesweeper4j.simulation.actions.Action;
 import cz.minesweeper4j.simulation.agent.IAgent;
 import cz.minesweeper4j.simulation.board.oop.Board;
@@ -18,7 +19,7 @@ import cz.minesweeper4j.simulation.board.oop.Board;
 public class PrologAgent extends PrologAgentBase {
 
 	public PrologAgent() {
-		// Lower to make the agent play faster...
+		// Lower (any time) to make the agent play faster...
 		sleepInterleveMillis = 500;
 	}
 	
@@ -50,16 +51,29 @@ public class PrologAgent extends PrologAgentBase {
 		// TODO: use Prolog to come up with an action; return NULL if you cannot reason anything out
         //       see: https://www.programcreek.com/java-api-examples/index.php?api=alice.tuprolog.Prolog
 		//       note that you have interesting information in this.unknowns and this.border pre-computed
+		
+		// CHECK DOCUMENTATION FOR THE FOLLOWING THINGS OUT... 
+		// -- might come in handy
+		// -- they are precomputed for you every "think"
+		//
+		// this.borderNumbers
+		// this.borderUnknowns
+		// this.unknowns
+		
 		return null;
 	}
 	
 	public static void main(String[] args) {		
 		IAgent agent = new SATAgent(); 
+		MinesweeperResult result;
 		
 		// switch true to false to disable visualization...
-		Minesweeper.playAgent("PrologAgent", 5, 5, 5, 30 * 60 * 1000, 1, true, agent);
+		result = Minesweeper.playAgent("PrologAgent", 5, 5, 5, 30 * 60 * 1000, 1, true, agent);
 		
-		//Minesweeper.playAgent("PrologAgent", 10, 10, 10, 30 * 60 * 1000, 1, true, agent);	
+		//result = Minesweeper.playAgent("PrologAgent", 10, 10, 10, 30 * 60 * 1000, 1, true, agent);
+		
+		System.out.println("---// FINISHED //---");
+		System.out.println(result);
 	}
 
 }

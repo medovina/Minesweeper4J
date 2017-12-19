@@ -8,7 +8,7 @@ public class Tile implements Cloneable {
 	public ETile type;
 	
 	/**
-	 * How many mines are around? For an agent / a player, this is valid only iff the tile is {@link #visible}
+	 * How many mines are around? For an agent / a player, this is valid only iff the tile is {@link #visible}.
 	 */
 	public Integer mines = null;
 	
@@ -23,7 +23,7 @@ public class Tile implements Cloneable {
 	public boolean flag = false;
 	
 	/**
-	 * Tile's X coordinate; 0-babsed.
+	 * Tile's X coordinate; 0-based.
 	 */
 	public int tileX;
 	

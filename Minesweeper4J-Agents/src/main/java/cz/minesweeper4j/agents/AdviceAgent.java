@@ -41,6 +41,7 @@ public class AdviceAgent extends ArtificialAgent {
 		int masterRandomSeed = 10;
 		
 		MinesweeperResult result = Minesweeper.playAgent("AdviceAgent", 15, 15, 20, 60 * 1000, masterRandomSeed, true, agent);
+		System.out.println("---// FINISHED //---");
 		System.out.println(result);
 	}
 

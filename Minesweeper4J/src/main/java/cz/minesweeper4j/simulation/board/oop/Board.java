@@ -310,6 +310,9 @@ public class Board implements Cloneable {
 				Tile tile = tile(x, y);
 				if (tile.visible) {					
 					System.out.print(tile.mines);
+				} else 
+				if (tile.flag) {
+					System.out.print("F");
 				} else {
 					System.out.print(tile.type.debugChar);
 				}							

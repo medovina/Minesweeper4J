@@ -31,6 +31,7 @@ public class RandomAgent1 extends ArtificialAgent {
 		IAgent agent = new RandomAgent1(); 
 		
 		MinesweeperResult result = Minesweeper.playAgent("RandomAgent1", 10, 10, 10, 60 * 1000, 1, true, agent);
+		System.out.println("---// FINISHED //---");
 		System.out.println(result);
 	}
 

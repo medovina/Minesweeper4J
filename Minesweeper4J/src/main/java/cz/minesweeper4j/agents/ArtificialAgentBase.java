@@ -10,8 +10,6 @@ public abstract class ArtificialAgentBase implements IAgent {
 
 	private Action action;
 	
-	protected Board previousBoard;
-	
 	protected Board board;
 		
 	private ThinkThread thread;
@@ -31,7 +29,6 @@ public abstract class ArtificialAgentBase implements IAgent {
 
 	@Override
 	public void observe(Board board) {
-		this.previousBoard = board;
 		this.board = board;
 	}
 
@@ -71,7 +68,7 @@ public abstract class ArtificialAgentBase implements IAgent {
 	 * @param previousBoard a board from previous think, may be null during the first think tick
 	 * @return
 	 */
-	protected abstract Action think(final Board board, final Board previousBoard);
+	protected abstract Action think(final Board board);
 	
 	@Override
 	public void tileClicked(int tileX, int tileY, boolean rightBtn) {		
@@ -137,7 +134,7 @@ public abstract class ArtificialAgentBase implements IAgent {
 							throw new RuntimeException("Interrupted on sleep");
 						}
 					}
-					Action thinkAction = think(board, previousBoard);
+					Action thinkAction = think(board);
 					synchronized(mutex) {
 						if (ArtificialAgentBase.this.thread == this) {
 							action = thinkAction;
