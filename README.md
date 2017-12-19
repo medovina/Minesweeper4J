@@ -1,7 +1,7 @@
 # Minesweeper4J
 Minesweepr for Java (using Swing via [Clear2D](http://github.com/kefik/Clear2D)) tailored for casual playing but especially for creating custom Minesweeper agents. Fully playable but truly meant for programmers for the development of Minesweeper artificial players.
 
-**LICENSED UNDER** [CC-BY-3.0](https://creativecommons.org/licenses/by/3.0/legalcode) Please retain URL to the [Minesweeper4J](https://github.com/kefik/Minesweeper4J) in your work.
+**LICENSED UNDER** [CC-BY-3.0](https://creativecommons.org/licenses/by/3.0/) Please retain URL to the [Minesweeper4J](https://github.com/kefik/Minesweeper4J) in your work.
 
 ![alt tag](https://github.com/kefik/Minesweeper4J/raw/master/Minesweeper4J/Minesweeper-1.png)
 ![alt tag](https://github.com/kefik/Minesweeper4J/raw/master/Minesweeper4J/Minesweeper-2.png)
