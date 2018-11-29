@@ -140,6 +140,7 @@ public class MinesweeperSim implements IMinesweeperGame, Runnable {
 			result.setSimStartMillis(System.currentTimeMillis());			
 			
 			while (shouldRun && !Thread.interrupted()) {
+				Thread.sleep(50);
 
 				// TIMEOUT?
 				if (timeoutMillis > 0) {
