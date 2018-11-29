@@ -99,7 +99,7 @@ public class MinesweeperConsole {
 			e.printStackTrace();
 			System.out.println("");
 		}		
-        System.out.println("Usage: java -jar sokoban.jar ");
+        System.out.println("Usage: java -jar minesweeper.jar ");
         System.out.println("                " + jsap.getUsage());
         System.out.println();
         System.out.println(jsap.getHelp());
@@ -143,7 +143,7 @@ public class MinesweeperConsole {
 	    FlaggedOption opt2 = new FlaggedOption(ARG_ID_LONG)
 	    	.setStringParser(JSAP.STRING_PARSER)
 	    	.setRequired(false)
-	    	.setDefault("Sokoban")
+	    	.setDefault("Minesweeper")
 	    	.setShortFlag(ARG_ID_SHORT)
 	    	.setLongFlag(ARG_ID_LONG);    
 	    opt2.setHelp("Simulation ID echoed into CSV.");
