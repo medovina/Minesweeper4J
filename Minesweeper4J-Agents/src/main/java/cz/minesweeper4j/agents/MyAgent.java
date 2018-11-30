@@ -10,7 +10,7 @@ import cz.minesweeper4j.simulation.board.oop.Board;
  * Agent that uses all advises until the board can be solved. Always wins.
  * @author Jimmy
  */
-public class AdviceAgent extends ArtificialAgent {
+public class MyAgent extends ArtificialAgent {
 			
 	/**
 	 * See {@link ArtificialAgent#think(Board)} and {@link ArtificialAgent#observe(Board)} for things it is doing
@@ -36,11 +36,11 @@ public class AdviceAgent extends ArtificialAgent {
 	}
 	
 	public static void main(String[] args) {
-		IAgent agent = new AdviceAgent(); 
+		IAgent agent = new MyAgent(); 
 		
 		int masterRandomSeed = 10;
 		
-		MinesweeperResult result = Minesweeper.playAgent("AdviceAgent", 15, 15, 20, 60 * 1000, masterRandomSeed, true, agent);
+		MinesweeperResult result = Minesweeper.playAgent("MyAgent", 15, 15, 20, 60 * 1000, masterRandomSeed, true, agent);
 		System.out.println("---// FINISHED //---");
 		System.out.println(result);
 	}

@@ -8,7 +8,7 @@ import org.sat4j.specs.TimeoutException;
 import org.sat4j.tools.ModelIterator;
 
 import cz.minesweeper4j.Minesweeper;
-import cz.minesweeper4j.agents.AdviceAgent;
+import cz.minesweeper4j.agents.MyAgent;
 import cz.minesweeper4j.agents.SATAgentBase;
 import cz.minesweeper4j.simulation.MinesweeperResult;
 import cz.minesweeper4j.simulation.actions.Action;
@@ -18,7 +18,7 @@ import cz.minesweeper4j.simulation.board.oop.Board;
 /**
  * Agent ready to have SAT solver stuffed with the problem and used.
  *
- * Note that without anything, this agent behaves the same as {@link AdviceAgent}.
+ * Note that without anything, this agent behaves the same as {@link MyAgent}.
  * 
  * @author Jimmy
  */

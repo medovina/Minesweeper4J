@@ -2,7 +2,7 @@ package cz.minesweeper4j.playground;
 
 import alice.tuprolog.Prolog;
 import cz.minesweeper4j.Minesweeper;
-import cz.minesweeper4j.agents.AdviceAgent;
+import cz.minesweeper4j.agents.MyAgent;
 import cz.minesweeper4j.agents.PrologAgentBase;
 import cz.minesweeper4j.simulation.MinesweeperResult;
 import cz.minesweeper4j.simulation.actions.Action;
@@ -12,7 +12,7 @@ import cz.minesweeper4j.simulation.board.oop.Board;
 /**
  * Agent ready to have PROLOG stuffed with the theory and used.
  *
- * Note that without anything, this agent behaves the same as {@link AdviceAgent}.
+ * Note that without anything, this agent behaves the same as {@link MyAgent}.
  * 
  * @author Jimmy
  */
