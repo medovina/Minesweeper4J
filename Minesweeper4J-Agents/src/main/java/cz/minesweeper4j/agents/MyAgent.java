@@ -6,33 +6,18 @@ import cz.minesweeper4j.simulation.actions.Action;
 import cz.minesweeper4j.simulation.agent.IAgent;
 import cz.minesweeper4j.simulation.board.oop.Board;
 
-/**
- * Agent that uses all advises until the board can be solved. Always wins.
- * @author Jimmy
- */
 public class MyAgent extends ArtificialAgent {
+	
+	/* Code your custom agent here.  The existing dummy implementation always asks for advice.
+     *
+     * The Board object passed to thinkImpl gives you the current board state.  Be sure to
+     * notice that the superclass ArtificialAgent has some protected fields with additional
+     * useful board state information.
+     */
 			
-	/**
-	 * See {@link ArtificialAgent#think(Board)} and {@link ArtificialAgent#observe(Board)} for things it is doing
-	 * automatically for you.
-	 * 
-	 * @param board current state of the board
-	 * @param previousBoard a board from previous think, may be null during the first think tick
-	 */
 	@Override
 	protected Action thinkImpl(Board board, Board previousBoard) {
-		// USE ADVICE AS MUCH AS POSSIBLE
-		if (board.safeTilePos != null) {
-			if (!board.tile(board.safeTilePos).visible) {
-				// OPEN SAFE POS
-				return actions.open(board.safeTilePos);
-			} else { 
-				// ASK FOR ANOTHER ADVICE
-				return actions.advice();
-			} 
-		}
-		
-		throw new RuntimeException("Should not reach here; we should get all possible advices.");
+		return actions.advice();
 	}
 	
 	public static void main(String[] args) {
