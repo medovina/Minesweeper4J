@@ -126,7 +126,8 @@ public abstract class ArtificialAgent extends ArtificialAgentBase {
 
 	@Override
 	protected final Action think(Board board) {
-		System.out.println("--- " + getClass().getSimpleName() + " THINK ---");
+		if (verbose)
+			System.out.println("--- " + getClass().getSimpleName() + " THINK ---");
 		
 		// SLEEPING
 		if (sleepInterleveMillis > 0) {
@@ -140,10 +141,13 @@ public abstract class ArtificialAgent extends ArtificialAgentBase {
 		}
 		
 		// BOARD STATE
-		board.printBoard();
+		if (verbose)
+			board.printBoard();
 		
 		// ALWAYS USE AN ADVICE
 		if (board.safeTilePos != null && !board.tile(board.safeTilePos).visible) {
+			if (verbose)
+				System.out.format("took hint at %d, %d\n", board.safeTilePos.x, board.safeTilePos.y);
 			return actions.open(board.safeTilePos);
 		}
 		

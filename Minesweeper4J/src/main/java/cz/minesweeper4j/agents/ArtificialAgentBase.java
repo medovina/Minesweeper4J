@@ -19,6 +19,10 @@ public abstract class ArtificialAgentBase implements IAgent {
 	private RuntimeException agentException;
 	
 	protected ArtificialAgentActions actions = new ArtificialAgentActions();
+	
+	protected boolean verbose = false;
+	
+	protected boolean synchronous = false;
 
 	@Override
 	public void newBoard() {
@@ -34,12 +38,16 @@ public abstract class ArtificialAgentBase implements IAgent {
 
 	@Override
 	public Action act() {
+		if (synchronous)
+			return think(board);
+		
 		// HAVE ACTION?
 		if (action != null) {
 			// => EXECUTE
 			Action action = this.action;
 			this.action = null;
-			System.out.println("EXECUTING: " + action);
+			if (verbose)
+				System.out.println("EXECUTING: " + action);
 			return action;
 		}
 		
