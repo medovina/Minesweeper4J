@@ -1,6 +1,7 @@
-package cz.minesweeper4j.agents;
+package cz.minesweeper4j.playground;
 
 import cz.minesweeper4j.Minesweeper;
+import cz.minesweeper4j.agents.ArtificialAgent;
 import cz.minesweeper4j.simulation.MinesweeperResult;
 import cz.minesweeper4j.simulation.actions.Action;
 import cz.minesweeper4j.simulation.agent.IAgent;

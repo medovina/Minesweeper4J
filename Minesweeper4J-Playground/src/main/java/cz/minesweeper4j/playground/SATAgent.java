@@ -8,7 +8,6 @@ import org.sat4j.specs.TimeoutException;
 import org.sat4j.tools.ModelIterator;
 
 import cz.minesweeper4j.Minesweeper;
-import cz.minesweeper4j.agents.MyAgent;
 import cz.minesweeper4j.agents.SATAgentBase;
 import cz.minesweeper4j.simulation.MinesweeperResult;
 import cz.minesweeper4j.simulation.actions.Action;

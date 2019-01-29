@@ -55,6 +55,12 @@ public abstract class ArtificialAgent extends ArtificialAgentBase {
 	 */
 	protected int flaggedTileCount;
 	
+	long thinkTime;
+	
+	public void setSleepInterval(int ms) { sleepInterleveMillis = ms; }
+	
+	public long getThinkTime() { return thinkTime; }
+	
 	@Override
 	public void observe(Board board) {
 		super.observe(board);
@@ -166,7 +172,12 @@ public abstract class ArtificialAgent extends ArtificialAgentBase {
 		}
 		
 		// DO THE THINKING
+		
+		long start = System.currentTimeMillis();
+		
 		Action result = thinkImpl(board, previousBoard);
+		
+		thinkTime += System.currentTimeMillis() - start;
 		
 		// SAVE BOARD thinkImpl HAS SEEN
 		// -- mind the fact, that the next think() iteration may not invoke thinkImpl() 

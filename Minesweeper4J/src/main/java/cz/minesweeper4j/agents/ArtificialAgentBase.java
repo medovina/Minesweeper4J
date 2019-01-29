@@ -22,7 +22,7 @@ public abstract class ArtificialAgentBase implements IAgent {
 	
 	protected boolean verbose = false;
 	
-	protected boolean synchronous = false;
+	protected boolean synchronous = true;
 
 	@Override
 	public void newBoard() {

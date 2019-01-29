@@ -2,7 +2,6 @@ package cz.minesweeper4j.playground;
 
 import alice.tuprolog.Prolog;
 import cz.minesweeper4j.Minesweeper;
-import cz.minesweeper4j.agents.MyAgent;
 import cz.minesweeper4j.agents.PrologAgentBase;
 import cz.minesweeper4j.simulation.MinesweeperResult;
 import cz.minesweeper4j.simulation.actions.Action;
