@@ -16,7 +16,11 @@ public class Evaluate {
 		
 		int mines = size * size * density / 100;
 		
-		for (int trial = 0 ; trial < 10 ; ++trial) {
+		int runs = 10;
+		long totalTime = 0;
+		int totalHints = 0;
+		
+		for (int trial = 0 ; trial < runs ; ++trial) {
     		MyAgent agent = new MyAgent();
     		agent.setSleepInterval(0);   // don't pause between moves
     		
@@ -28,6 +32,12 @@ public class Evaluate {
     		
     		System.out.format("%d x %d, %d mines (%d%% density): solved in %d ms, hints = %d\n",
     		        size, size, mines, density, agent.getThinkTime(), result.getSafeTileSuggestions());
+    		
+    		totalTime += agent.getThinkTime();
+    		totalHints += result.getSafeTileSuggestions();
 		}
+		
+		System.out.format("average over %d runs: time = %d ms, hints = %.1f\n",
+				runs, totalTime / runs, 1.0 * totalHints / runs);
 	}
 }
