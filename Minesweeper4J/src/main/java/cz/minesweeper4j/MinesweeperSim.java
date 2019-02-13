@@ -166,6 +166,7 @@ public class MinesweeperSim implements IMinesweeperGame, Runnable {
 				
 				// DIED?
 				if (board.boom) {
+                    System.err.println("** Stepped on a mine! **");
 					onDied();
 					return;
 				}
