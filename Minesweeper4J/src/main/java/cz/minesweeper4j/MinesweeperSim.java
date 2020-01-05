@@ -212,16 +212,8 @@ public class MinesweeperSim implements IMinesweeperGame, Runnable {
 					}
 					++steps;
 					observe = true;
-				} else {
-					// TODO: should we have "verbose" version of MinesweeperSim?
-					
-					// PENALIZATION
-					try {
-						Thread.sleep(16);
-					} catch (Exception e) {						
-					}
-					
-				}
+				} else
+                    System.out.println("warning: ignoring invalid action");
 				
 				agentAction = null;
 			}
