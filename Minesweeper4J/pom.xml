@@ -1,14 +1,11 @@
 <project>
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>cz.minesweeper4j</groupId>
-	<artifactId>minesweeper4j</artifactId>
+	<groupId>cz.cuni.mff</groupId>
+	<artifactId>minesweeper4j-core</artifactId>
 	<version>0.1.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>minesweeper4j</name>
-	<url>https://github.com/kefik/Minesweeper4J</url>
-	
 	<properties>
         <maven.compiler.source>1.11</maven.compiler.source>
         <maven.compiler.target>1.11</maven.compiler.target>

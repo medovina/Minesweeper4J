@@ -1,0 +1,14 @@
+<project>
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>cz.cuni.mff</groupId>
+	<artifactId>minesweeper4j</artifactId>
+	<version>0.1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    
+	<modules>
+	  <module>Minesweeper4J</module>
+	  <module>Minesweeper4J-Agents</module>
+	  <module>Minesweeper4J-Playground</module>
+	</modules>
+</project>
