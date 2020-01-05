@@ -3,8 +3,6 @@ package cz.minesweeper4j.ui;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;
 
-import cz.minesweeper4j.simulation.agent.IAgent;
-
 public class MouseListener implements java.awt.event.MouseListener, MouseMotionListener{
 
 	private MinesweeperPanel panel;

@@ -73,7 +73,7 @@ public class MinesweeperConsole {
 	
 	private static String agentClassString;
 	
-	private static Class agentClass;
+	private static Class<?> agentClass;
 	
 	private static IAgent agent;
 	
@@ -203,7 +203,7 @@ public class MinesweeperConsole {
 	    	.setDefault("1")
 	    	.setShortFlag(ARG_RANDOM_SEED_SHORT)
 	    	.setLongFlag(ARG_RANDOM_SEED_LONG);    
-	    opt6.setHelp("Random seed to use to randomly place mines.");
+	    opt7.setHelp("Random seed to use to randomly place mines.");
 	
 	    jsap.registerParameter(opt6);
    	}
@@ -221,8 +221,10 @@ public class MinesweeperConsole {
 	    }
 		
 		if (!config.success()) {
-			String error = "Invalid arguments specified.";
-			Iterator errorIter = config.getErrorMessageIterator();
+            String error = "Invalid arguments specified.";
+
+            @SuppressWarnings("unchecked")
+			Iterator<String> errorIter = config.getErrorMessageIterator();
 			if (!errorIter.hasNext()) {
 				error += "\n-- No details given.";
 			} else {
@@ -386,7 +388,7 @@ public class MinesweeperConsole {
 		return (String[]) args.toArray(new String[0]);
 	}
 	
-	public static String[] getArgs(MinesweeperConfig config, Class agentClass, File resultFile) {
+	public static String[] getArgs(MinesweeperConfig config, Class<?> agentClass, File resultFile) {
 		List<String> args = new ArrayList<String>();
 		
 		args.add("-w"); args.add("" + config.width); // board width

@@ -1,13 +1,12 @@
 package cz.minesweeper4j.ui;
 
 import java.awt.Color;
-import java.awt.event.KeyListener;
 
 import cz.cuni.amis.clear2d.engine.C2DPanelStandalone;
+import cz.cuni.amis.clear2d.engine.components.CSprite;
 import cz.cuni.amis.clear2d.engine.fonts.C2DFonts;
 import cz.cuni.amis.clear2d.engine.iface.IDrawable;
 import cz.cuni.amis.clear2d.engine.math.Vector2;
-import cz.cuni.amis.clear2d.engine.prefabs.FPS;
 import cz.cuni.amis.clear2d.engine.prefabs.Label;
 import cz.cuni.amis.clear2d.engine.prefabs.Quad;
 import cz.cuni.amis.clear2d.engine.prefabs.Sprite;
@@ -25,7 +24,7 @@ public class MinesweeperPanel extends C2DPanelStandalone {
 	
 	private Board board;
 	
-	private Sprite[][] boardView;
+	private Sprite<?>[][] boardView;
 
 	protected IAgent agent;
 	
@@ -39,10 +38,6 @@ public class MinesweeperPanel extends C2DPanelStandalone {
 	private Quad selection;
 	
 	protected boolean showReal = false;
-
-	private KeyListener keyListener;
-	
-	private FPS fps;
 
 	public MinesweeperPanel(Board board, IAgent agent) {
 		super(board.width * 24, board.height * 24, new Color(217, 244, 255));
@@ -83,11 +78,11 @@ public class MinesweeperPanel extends C2DPanelStandalone {
 	private void initBoard(Board board) {
 		this.board = board;
 		
-		boardView = new Sprite[board.width][board.height];
+		boardView = new Sprite<?>[board.width][board.height];
 		
 		for (int x = 0; x < board.width; ++x) {
 			for (int y = 0; y < board.height; ++y) {
-				boardView[x][y] = new Sprite(getTexture(board.tile(x,  y)));
+				boardView[x][y] = new Sprite<IDrawable>(getTexture(board.tile(x,  y)));
 				boardView[x][y].pos = new Vector2(x * 24, y * 24);
 				scene.root.addChild(boardView[x][y]);
 			}
@@ -186,7 +181,9 @@ public class MinesweeperPanel extends C2DPanelStandalone {
 	public void updateBoardView() {
 		for (int x = 0; x < board.width; ++x) {
 			for (int y = 0; y < board.height; ++y) {
-				boardView[x][y].cSprite.texture = getTexture(board.tile(x, y));
+                @SuppressWarnings("unchecked")
+                CSprite<IDrawable> cs = boardView[x][y].cSprite;
+                cs.texture = getTexture(board.tile(x, y));
 			}
 		}
 		

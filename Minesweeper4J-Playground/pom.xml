@@ -1,13 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project>
 	<modelVersion>4.0.0</modelVersion>
-
-	<parent>
-		<groupId>cz.cuni.amis</groupId>
-		<artifactId>amis-pom</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
-		<relativePath>../../Poms/AmisPom/pom.xml</relativePath>
-	</parent>
 
 	<groupId>cz.minesweeper4j</groupId>
 	<artifactId>minesweeper4j-playground</artifactId>
@@ -17,7 +9,12 @@
 	<name>minesweeper4j-playground</name>
 	<url>https://github.com/kefik/Minesweeper4J</url>
 	
-	<dependencies>
+    <properties>
+        <maven.compiler.source>1.11</maven.compiler.source>
+        <maven.compiler.target>1.11</maven.compiler.target>
+    </properties>
+    
+    <dependencies>
         <!--
            MINESWEEPER DEPENDENCY
         -->

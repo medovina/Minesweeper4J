@@ -44,8 +44,6 @@ public class MinesweeperSim implements IMinesweeperGame, Runnable {
 	
 	private int safeTileSuggestions = 0;
 	
-	private long simMovesMillis = 0;
-	
 	private Random random;
 	
 	/**
@@ -192,8 +190,6 @@ public class MinesweeperSim implements IMinesweeperGame, Runnable {
 				
 				if (action == null) continue;
 				
-				long simMovesBegin = System.currentTimeMillis();
-							
 				agentAction = action;
 	
 				// AGENT ACTION VALID?
@@ -228,8 +224,6 @@ public class MinesweeperSim implements IMinesweeperGame, Runnable {
 				}
 				
 				agentAction = null;
-				
-				simMovesMillis += System.currentTimeMillis() - simMovesBegin;				
 			}
 		} catch (Exception e) {
 			onSimulationException(e);
