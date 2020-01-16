@@ -3,7 +3,7 @@
 
 	<groupId>cz.cuni.mff</groupId>
 	<artifactId>minesweeper4j-agents</artifactId>
-	<version>0.1.0-SNAPSHOT</version>
+	<version>0.1</version>
 	<packaging>jar</packaging>
 
     <properties>
@@ -18,7 +18,7 @@
         <dependency>
             <groupId>cz.cuni.mff</groupId>
             <artifactId>minesweeper4j-core</artifactId>
-            <version>0.1.0-SNAPSHOT</version>
+            <version>0.1</version>
         </dependency>
         
         <!--
