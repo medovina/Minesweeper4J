@@ -1,0 +1,4 @@
+#!/bin/bash
+
+jar cf minesweeper.jar -C Minesweeper4J/target/classes . \
+                       -C Minesweeper4J-Playground/target/classes cz/minesweeper4j/playground/Evaluate.class
