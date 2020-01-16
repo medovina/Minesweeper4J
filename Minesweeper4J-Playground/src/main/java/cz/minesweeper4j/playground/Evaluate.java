@@ -40,7 +40,7 @@ public class Evaluate {
         return avgHints;
     }
     
-	public static void main(String[] args) {
+	public static void test(String[] args) {
         test(50, 10);
     }
 }
