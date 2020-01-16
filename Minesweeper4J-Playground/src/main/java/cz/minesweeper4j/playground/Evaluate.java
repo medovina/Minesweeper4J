@@ -5,7 +5,7 @@ import cz.minesweeper4j.simulation.MinesweeperResult;
 import cz.minesweeper4j.simulation.MinesweeperResult.MinesweeperResultType;
 
 public class Evaluate {
-	public static double test(int runs, int size) {
+	public static EvaluateResults test(int runs, int size) {
 		int masterRandomSeed = 10;
 		
 		int density = 20;  // density percentage
@@ -24,7 +24,7 @@ public class Evaluate {
     		
     		if (result.getResult() != MinesweeperResultType.VICTORY) {
                 System.out.println("error: failed to solve the level");
-                return -1;
+                return null;
             }
     		
     		System.out.format("%d x %d, %d mines (%d%% density): solved in %d ms, hints = %d\n",
@@ -34,10 +34,12 @@ public class Evaluate {
     		totalHints += result.getSafeTileSuggestions();
 		}
         
-        double avgHints = 1.0 * totalHints / runs;
+        EvaluateResults results = new EvaluateResults();
+        results.avgTime = totalTime / runs;
+        results.avgHints = 1.0 * totalHints / runs;
 		System.out.format("average over %d runs: time = %d ms, hints = %.1f\n",
-                runs, totalTime / runs, avgHints);
-        return avgHints;
+                runs, results.avgTime, results.avgHints);
+        return results;
     }
     
 	public static void test(String[] args) {
