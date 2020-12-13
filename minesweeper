@@ -1,5 +1,3 @@
 java -cp "target/classes:\
-$HOME/.m2/repository/com/martiansoftware/jsap/2.1/*:\
-$HOME/.m2/repository/com/thoughtworks/xstream/xstream/1.4.13/*:\
-$HOME/.m2/repository/cz/cuni/amis/clear-2d/0.0.1-SNAPSHOT/*" \
+$HOME/.m2/repository/com/martiansoftware/jsap/2.1/*" \
     cz.minesweeper4j.MinesweeperConsole $*
