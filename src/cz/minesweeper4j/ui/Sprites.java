@@ -10,25 +10,18 @@ public class Sprites {
     BufferedImage[] nums = new BufferedImage[9];
 
     public Sprites() {
-        BufferedImage sprites;
-        
-        try {
-            sprites = ImageIO.read(getClass().getResourceAsStream("/images/sprites.png"));
-        } catch (IOException e) { throw new Error(e); }
-
-        hidden = get(sprites, 0, 0);
-        mine = get(sprites, 2, 1);
-        flag = get(sprites, 2, 2);
-        empty = get(sprites, 2, 3);
-
-        int[] num_x = { 0, 2, 1, 3, 1, 1, 0, 0, 0 };
-        int[] num_y = { 0, 0, 3, 0, 1, 0, 3, 2, 1 };
+        hidden = get("hidden");
+        mine = get("mine");
+        flag = get("flag");
+        empty = get("0");
 
         for (int i = 1 ; i <= 8 ; ++i)
-            nums[i] = get(sprites, num_x[i], num_y[i]);
+            nums[i] = get(Integer.toString(i));
     }
 
-    BufferedImage get(BufferedImage sprites, int x, int y) {
-        return sprites.getSubimage(x * 26, y * 26, 24, 24);
+    BufferedImage get(String name) {
+        try {
+            return ImageIO.read(getClass().getResourceAsStream("/images/" + name + ".png"));
+        } catch (IOException e) { throw new Error(e); }
     }
 }

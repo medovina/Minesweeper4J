@@ -9,6 +9,8 @@ import cz.minesweeper4j.simulation.agent.IAgent;
 import cz.minesweeper4j.simulation.board.oop.*;
 
 public class MinesweeperPanel extends JPanel {
+    final int TILE = 32;
+
 	private static final long serialVersionUID = 0;
 	
 	private Board board;
@@ -26,7 +28,7 @@ public class MinesweeperPanel extends JPanel {
 	public MinesweeperPanel(Board board, IAgent agent) {
         setBackground(new Color(217, 244, 255));
         
-        setPreferredSize(new Dimension(board.width * 24, board.height * 24));
+        setPreferredSize(new Dimension(board.width * TILE, board.height * TILE));
 		
 		this.board = board;
 		
@@ -53,17 +55,17 @@ public class MinesweeperPanel extends JPanel {
                 else
                     i = t.flag ? sprites.flag : sprites.hidden;
                 
-                g.drawImage(i, 24 * x, 24 * y, null);
+                g.drawImage(i, TILE * x, TILE * y, null);
             }
 
         if (board.safeTilePos != null) {
             g.setColor(Color.WHITE);
-            g.drawRect(24 * board.safeTilePos.x, 24 * board.safeTilePos.y, 24, 24);
+            g.drawRect(TILE * board.safeTilePos.x, TILE * board.safeTilePos.y, TILE, TILE);
         }
 
         if (cursorX >= 0) {
             g.setColor(Color.YELLOW);
-            g.drawRect(24 * cursorX, 24 * cursorY, 24, 24);
+            g.drawRect(TILE * cursorX, TILE * cursorY, TILE, TILE);
         }
     }
 
@@ -72,8 +74,8 @@ public class MinesweeperPanel extends JPanel {
 		if (board.isVictory()) return;
 		
 		if (agent != null) {
-			int tileX = (mouseX-4) / 24;
-			int tileY = (mouseY-4) / 24;
+			int tileX = (mouseX-4) / TILE;
+			int tileY = (mouseY-4) / TILE;
 			if (tileX < 0) tileX = 0;
 			else if (tileX >= board.width) tileX = board.width-1;
 			if (tileY < 0) tileY = 0;
@@ -87,8 +89,8 @@ public class MinesweeperPanel extends JPanel {
 		if (board.isVictory()) return;
 		
 		if (agent != null) {
-			int tileX = (mouseX-4) / 24;
-			int tileY = (mouseY-4) / 24;
+			int tileX = (mouseX-4) / TILE;
+			int tileY = (mouseY-4) / TILE;
 			if (tileX < 0) tileX = 0;
 			else if (tileX >= board.width) tileX = board.width;
 			if (tileY < 0) tileY = 0;
