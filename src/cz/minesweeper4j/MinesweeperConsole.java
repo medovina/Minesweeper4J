@@ -3,36 +3,13 @@ package cz.minesweeper4j;
 import static java.lang.System.out;
 
 import java.io.*;
-import java.util.Random;
 
+import cz.minesweeper4j.agents.ArtificialAgent;
 import cz.minesweeper4j.simulation.MinesweeperResult;
 import cz.minesweeper4j.simulation.MinesweeperResult.MinesweeperResultType;
 import cz.minesweeper4j.simulation.agent.IAgent;
 
 public class MinesweeperConsole {
-	private static int width;
-	private static int height;
-	
-	private static int minesCount;
-	
-	private static int randomSeed = -1;
-	
-	private static long timeoutMillis = -1;
-	
-	private static boolean visualization = true;
-	
-	private static String agentClassString = "cz.minesweeper4j.agents.HumanAgent";
-	
-	private static Class<?> agentClass;
-	
-	private static IAgent agent;
-	
-	private static String id = "Minesweeper";
-	
-	private static String resultFileString;
-	
-	private static File resultFile;
-	
 	private static void fail(String errorMessage) {
 		fail(errorMessage, null);
 	}
@@ -46,102 +23,108 @@ public class MinesweeperConsole {
         }
         System.exit(1);
 	}
-	
-	private static void sanityChecks() {
-        if (resultFileString != null) {
-            resultFile = new File(resultFileString);
-            System.out.println("-- result file: " + resultFileString + " --> " + resultFile.getAbsolutePath());
-            
-            if (!resultFile.exists()) {
-                System.out.println("---- result file does not exist, will be created");
-            } else {
-                if (!resultFile.isFile()) {
-                    fail("Result file is not a file!!");
-                } else {
-                    System.out.println("---- result file exists, will be appended to");
-                }
-            }		
-            
-            if (!resultFile.getParentFile().exists()) {
-                System.out.println("---- creating parent directories for " + resultFile.getAbsolutePath());
-                resultFile.getParentFile().mkdirs();
-                if (!resultFile.getParentFile().exists()) {
-                    fail("Failed to create parent directories for " + resultFile.getAbsolutePath());
-                }
-            }
-        }
-		
+    
+    static IAgent makeAgent(String className) {
+        Class<?> agentClass = null;
+
 		try {
-			agentClass = Class.forName(agentClassString);
+			agentClass = Class.forName(className);
 		} catch (ClassNotFoundException e) {
-			fail("Failed to find class for name: " + agentClassString);
+			fail("Failed to find class for name: " + className);
 		}
 		
 		Object agentObject = null;
 		try {
 			agentObject = agentClass.getConstructor().newInstance();
 		} catch (Exception e) {
-			fail("Failed to instantiate class: " + agentClassString, e);
+			fail("Failed to instantiate class: " + className, e);
         } 
         
 		if (!IAgent.class.isAssignableFrom(agentObject.getClass())) {
-			fail("Class does not implement IAgent: " + agentClassString);
+			fail("Class does not implement IAgent: " + className);
 		}
-		agent = (IAgent)agentObject; 
-	}
-	
-	private static MinesweeperResult run() {
-		MinesweeperConfig config = new MinesweeperConfig();
-		
-		config.agent = agent;
-		config.id = id;
-		config.width = width;
-        config.height = height;
-        if (randomSeed >= 0)
-            config.random = new Random(randomSeed);
-        else
-            config.random = new Random();
-		config.totalMines = minesCount;
-		config.timeoutMillis = timeoutMillis;
-		config.visualization = visualization;
-		
-		MinesweeperResult result = Minesweeper.playConfig(config);
+		return (IAgent) agentObject; 
+    }
+
+	private static File makeResultFile(String resultFileString) {
+        if (resultFileString == null)
+            return null;
+
+        File resultFile = new File(resultFileString);
+        System.out.println("-- result file: " + resultFileString + " --> " + resultFile.getAbsolutePath());
         
-        if (resultFile != null)
-		    outputResult(result, resultFile);
-		
-		return result;
+        if (!resultFile.exists()) {
+            System.out.println("---- result file does not exist, will be created");
+        } else {
+            if (!resultFile.isFile()) {
+                fail("Result file is not a file!!");
+            } else {
+                System.out.println("---- result file exists, will be appended to");
+            }
+        }		
+        
+        if (!resultFile.getParentFile().exists()) {
+            System.out.println("---- creating parent directories for " + resultFile.getAbsolutePath());
+            resultFile.getParentFile().mkdirs();
+            if (!resultFile.getParentFile().exists()) {
+                fail("Failed to create parent directories for " + resultFile.getAbsolutePath());
+            }
+        }
+
+        return resultFile;
 	}
 	
-	private static void outputResult(MinesweeperResult result, File resultFile) {
+    private static void outputResult(MinesweeperConfig config, String agentClass,
+                                     MinesweeperResult result, File resultFile) {
 		System.out.println("Outputting result: " + result);
-		FileOutputStream output = null;		
 		boolean header = !resultFile.exists();
-		try {
-			output = new FileOutputStream(resultFile, true);
-		} catch (FileNotFoundException e) {
-			fail("Failed to append to the result file: " + resultFile.getAbsolutePath());
-		}
-		try {
-			PrintWriter writer = new PrintWriter(output);
-		
+
+        try (PrintWriter writer = new PrintWriter(new FileOutputStream(resultFile, true))) {
 			if (header) {
 				writer.println("id;width;height;minesCount;randomSeed;agent;result;steps;hints;playTimeMillis");
 			}
 			writer.println(
-                result.getId() + ";" + width + ";" + height + ";" + minesCount + ";" +
-                randomSeed + ";" + agentClassString + ";" + result.getResult() + ";" +
+                result.getId() + ";" + config.width + ";" + config.height + ";" + config.totalMines + ";" +
+                config.randomSeed + ";" + agentClass + ";" + result.getResult() + ";" +
                 result.getSteps() + ";" + result.getSafeTileSuggestions() + ";" +
                 result.getSimDurationMillis());
-			
-			writer.close();
-			
-		} finally {
-			try {
-				output.close();
-			} catch (IOException e) {
-			}
-		}		
+		} catch (FileNotFoundException e) {
+            fail("Failed to append to the result file: " + resultFile.getAbsolutePath());
+        }
+    }
+
+	public static EvaluateResults runGames(
+        MinesweeperConfig config, String className, int masterSeed, int games) {
+        
+		long totalTime = 0;
+		int totalHints = 0;
+		
+		for (int trial = 0 ; trial < games ; ++trial) {
+    		ArtificialAgent agent = (ArtificialAgent) makeAgent(className);
+    		agent.setSleepInterval(0);   // don't pause between moves
+            
+            config.setSeed(masterSeed + trial);
+    		MinesweeperResult result = Minesweeper.playConfig(config);
+    		
+    		if (result.getResult() != MinesweeperResultType.VICTORY) {
+                System.out.println("error: failed to solve the level");
+                return null;
+            }
+    		
+    		System.out.format("%d x %d, %d mines: solved in %d ms, hints = %d\n",
+                config.width, config.height, config.totalMines,
+                agent.getThinkTime(), result.getSafeTileSuggestions());
+    		
+    		totalTime += agent.getThinkTime();
+    		totalHints += result.getSafeTileSuggestions();
+		}
+        
+        EvaluateResults results = new EvaluateResults();
+        results.avgTime = totalTime / games;
+        results.avgHints = 1.0 * totalHints / games;
+		System.out.format("average over %d runs: time = %d ms, hints = %.1f\n",
+                games, results.avgTime, results.avgHints);
+        return results;
     }
     
     static void usage() {
@@ -153,7 +136,6 @@ public class MinesweeperConsole {
         out.println("  -seed <num> : random seed");
         out.println("  -size <num> [<num>] : board width and height");
         out.println("  -timeout <num> : timeout in milliseconds");
-        out.println("  -visual : show visualization");
         out.println();
         out.println("predefined board sizes:");
         out.println("  -easy: 9 x 9, 10 mines (default if no size is specified)");
@@ -162,7 +144,13 @@ public class MinesweeperConsole {
     }
 
 	public static void main(String[] args) {
+        MinesweeperConfig config = new MinesweeperConfig();
+	
+        int width = 0, height = 0;
+    	int numMines = 0;
         double density = -1;
+        String agentClassString = "cz.minesweeper4j.agents.HumanAgent";
+        String resultFileString = null;
 
         for (int i = 0 ; i < args.length ; ++i)
             if (args[i].startsWith("-"))
@@ -172,25 +160,25 @@ public class MinesweeperConsole {
                         break;
                     case "-easy":
                         width = height = 9;
-                        minesCount = 10;
+                        numMines = 10;
                         break;
                     case "-hard":
                         width = 30;
                         height = 16;
-                        minesCount = 99;
+                        numMines = 99;
                         break;
                     case "-id":
-                        id = args[++i];
+                        config.id = args[++i];
                         break;
                     case "-medium":
                         width = height = 16;
-                        minesCount = 40;
+                        numMines = 40;
                         break;
                     case "-result":
                         resultFileString = args[++i];
                         break;
                     case "-seed":
-                        randomSeed = Integer.parseInt(args[++i]);
+                        config.setSeed(Integer.parseInt(args[++i]));
                         break;
                     case "-size":
                         width = Integer.parseInt(args[++i]);
@@ -200,10 +188,7 @@ public class MinesweeperConsole {
                             height = width;
                         break;
                     case "-timeout":
-                        timeoutMillis = Integer.parseInt(args[++i]);
-                        break;
-                    case "-visual":
-                        visualization = true;
+                        config.timeoutMillis = Integer.parseInt(args[++i]);
                         break;
                     default:
                         usage();
@@ -218,21 +203,30 @@ public class MinesweeperConsole {
                 return;
             }
             width = height = 9;
-            minesCount = 10;
-        } else if (minesCount == 0) {
+            numMines = 10;
+        } else if (numMines == 0) {
             if (density == -1)
                 density = 0.2;
             if (density < 0 || density > 1.0) {
                 System.out.println("density must be between 0.0 and 1.0");
                 return;
             }
-            minesCount = (int) Math.round(density * width * height);
+            numMines = (int) Math.round(density * width * height);
         }
         
-        sanityChecks();
+        File resultFile = makeResultFile(resultFileString);
+            
+		config.agent = makeAgent(agentClassString);
+		config.width = width;
+        config.height = height;
+		config.totalMines = numMines;
+		config.visualization = true;
+		
+		MinesweeperResult result = Minesweeper.playConfig(config);
         
-        MinesweeperResult result = run();
-
+        if (resultFile != null)
+		    outputResult(config, agentClassString, result, resultFile);
+		
 	    if (result == null) System.exit(MinesweeperResultType.TERMINATED.getExitValue()+1);
 	    
 	    System.exit(result.getResult().getExitValue());	    	    

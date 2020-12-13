@@ -24,12 +24,12 @@ public class MinesweeperConfig {
 	/**
 	 * Random seed that has been used to initialize {@link #random}.
 	 */
-	public int randomSeed;
+	public int randomSeed = -1;
 	
 	/**
 	 * Random used for generating mines and suggesting a tile.
 	 */
-	public Random random = new Random(1);
+	public Random random = new Random();
 	
 	/**
 	 * How many mines to generate.
@@ -49,7 +49,12 @@ public class MinesweeperConfig {
 	/**
 	 * Instance of the agent that should play the game.
 	 */
-	public IAgent agent;
+    public IAgent agent;
+    
+    public void setSeed(int seed) {
+        randomSeed = seed;
+        random = new Random(seed);
+    }
 		
 	/**
 	 * Validates the configuration; throws {@link RuntimeException} if config is found invalid. 
