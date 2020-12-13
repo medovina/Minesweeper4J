@@ -94,16 +94,18 @@ public class MinesweeperConsole {
     }
 
 	public static EvaluateResults runGames(
-        MinesweeperConfig config, String className, int masterSeed, int games) {
+        MinesweeperConfig config, int masterSeed, String className, int games) {
         
 		long totalTime = 0;
 		int totalHints = 0;
 		
-		for (int trial = 0 ; trial < games ; ++trial) {
+		for (int i = 0 ; i < games ; ++i) {
     		ArtificialAgent agent = (ArtificialAgent) makeAgent(className);
-    		agent.setSleepInterval(0);   // don't pause between moves
+            agent.setSleepInterval(0);   // don't pause between moves
+            config.agent = agent;
             
-            config.setSeed(masterSeed + trial);
+            int seed = masterSeed + i;
+            config.setSeed(seed);
     		MinesweeperResult result = Minesweeper.playConfig(config);
     		
     		if (result.getResult() != MinesweeperResultType.VICTORY) {
@@ -111,9 +113,8 @@ public class MinesweeperConsole {
                 return null;
             }
     		
-    		System.out.format("%d x %d, %d mines: solved in %d ms, hints = %d\n",
-                config.width, config.height, config.totalMines,
-                agent.getThinkTime(), result.getSafeTileSuggestions());
+    		System.out.format("seed %d: solved in %d ms, hints = %d\n",
+                seed, agent.getThinkTime(), result.getSafeTileSuggestions());
     		
     		totalTime += agent.getThinkTime();
     		totalHints += result.getSafeTileSuggestions();
@@ -134,6 +135,7 @@ public class MinesweeperConsole {
         out.println("  -id <string> : ID to report in results");
         out.println("  -result <path> : result filename");
         out.println("  -seed <num> : random seed");
+        out.println("  -sim <num> : simulate a series of games without visualization");
         out.println("  -size <num> [<num>] : board width and height");
         out.println("  -timeout <num> : timeout in milliseconds");
         out.println();
@@ -149,8 +151,10 @@ public class MinesweeperConsole {
         int width = 0, height = 0;
     	int numMines = 0;
         double density = -1;
-        String agentClassString = "cz.minesweeper4j.agents.HumanAgent";
+        String agentClass = null;
         String resultFileString = null;
+        int seed = -1;
+        int simGames = 0;
 
         for (int i = 0 ; i < args.length ; ++i)
             if (args[i].startsWith("-"))
@@ -178,7 +182,10 @@ public class MinesweeperConsole {
                         resultFileString = args[++i];
                         break;
                     case "-seed":
-                        config.setSeed(Integer.parseInt(args[++i]));
+                        seed = Integer.parseInt(args[++i]);
+                        break;
+                    case "-sim":
+                        simGames = Integer.parseInt(args[++i]);
                         break;
                     case "-size":
                         width = Integer.parseInt(args[++i]);
@@ -195,11 +202,11 @@ public class MinesweeperConsole {
                         return;
                 }
             else
-                agentClassString = args[i];
+                agentClass = args[i];
 
         if (width == 0) {       // no size specified
             if (density != -1) {
-                System.out.println("error: cannot specify density without size");
+                System.out.println("error: must specify size with -density");
                 return;
             }
             width = height = 9;
@@ -208,27 +215,42 @@ public class MinesweeperConsole {
             if (density == -1)
                 density = 0.2;
             if (density < 0 || density > 1.0) {
-                System.out.println("density must be between 0.0 and 1.0");
+                System.out.println("error: density must be between 0.0 and 1.0");
                 return;
             }
             numMines = (int) Math.round(density * width * height);
         }
         
-        File resultFile = makeResultFile(resultFileString);
-            
-		config.agent = makeAgent(agentClassString);
 		config.width = width;
         config.height = height;
-		config.totalMines = numMines;
-		config.visualization = true;
-		
-		MinesweeperResult result = Minesweeper.playConfig(config);
+        config.totalMines = numMines;
         
-        if (resultFile != null)
-		    outputResult(config, agentClassString, result, resultFile);
-		
-	    if (result == null) System.exit(MinesweeperResultType.TERMINATED.getExitValue()+1);
+        if (simGames > 0) {
+            if (agentClass == null) {
+                out.println("error: must specify agent class with -sim");
+                return;
+            }
+            runGames(config, seed == -1 ? 0 : seed, agentClass, simGames);
+        }
+        else {
+            if (agentClass == null)
+                agentClass = "cz.minesweeper4j.agents.HumanAgent";
+            config.agent = makeAgent(agentClass);
+            
+            if (seed >= 0)
+                config.setSeed(seed);
+            config.visualization = true;
+
+            File resultFile = makeResultFile(resultFileString);
+            
+    		MinesweeperResult result = Minesweeper.playConfig(config);
+        
+            if (resultFile != null)
+                outputResult(config, agentClass, result, resultFile);
+            
+    	    if (result == null) System.exit(MinesweeperResultType.TERMINATED.getExitValue()+1);
 	    
-	    System.exit(result.getResult().getExitValue());	    	    
+            System.exit(result.getResult().getExitValue());
+        }
 	}
 }
