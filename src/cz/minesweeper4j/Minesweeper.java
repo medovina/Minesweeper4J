@@ -2,7 +2,6 @@ package cz.minesweeper4j;
 
 import java.util.Random;
 
-import cz.minesweeper4j.agents.HumanAgent;
 import cz.minesweeper4j.simulation.MinesweeperResult;
 import cz.minesweeper4j.simulation.MinesweeperResult.MinesweeperResultType;
 import cz.minesweeper4j.simulation.agent.IAgent;
@@ -82,20 +81,4 @@ public class Minesweeper {
 		return playConfig(config);
 	}
 	
-	public static MinesweeperResult playHuman(int width, int height, int totalMines, long timeoutMillis, int randomSeed) {
-		return playAgent("Human-" + width + "x" + height + "-M:" + totalMines + "-R:" + randomSeed, width, height, totalMines, timeoutMillis, randomSeed, true, new HumanAgent());		
-	}
-	
-	public static MinesweeperResult playHuman(int width, int height, int totalMines, int randomSeed) {
-		return playHuman(width, height, totalMines, -1, randomSeed);		
-	}
-	
-	// ===========
-	// MAIN METHOD
-	// ===========
-	
-	public static void main(String[] args) {
-		playHuman(10, 10, 10, 10);
-	}
-
 }

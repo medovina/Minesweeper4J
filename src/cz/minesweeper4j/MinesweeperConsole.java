@@ -29,7 +29,7 @@ public class MinesweeperConsole {
 	
 	private static String id = "Minesweeper";
 	
-	private static String resultFileString = "./results/Minesweeper-Results.csv";
+	private static String resultFileString;
 	
 	private static File resultFile;
 	
@@ -39,42 +39,42 @@ public class MinesweeperConsole {
 
 	private static void fail(String errorMessage, Throwable e) {
 		System.out.println("ERROR: " + errorMessage);
-		System.out.println();
 		if (e != null) {
+            System.out.println();
 			e.printStackTrace();
 			System.out.println("");
-		}		
-        System.out.println("Usage: java -jar minesweeper.jar ");
-        System.out.println();
-        throw new Error("FAILURE: " + errorMessage);
+        }
+        System.exit(1);
 	}
 	
 	private static void sanityChecks() {
-		resultFile = new File(resultFileString);
-		System.out.println("-- result file: " + resultFileString + " --> " + resultFile.getAbsolutePath());
-		
-		if (!resultFile.exists()) {
-			System.out.println("---- result file does not exist, will be created");
-		} else {
-			if (!resultFile.isFile()) {
-				fail("Result file is not a file!!");
-			} else {
-				System.out.println("---- result file exists, will be appended to");
-			}
-		}		
-		
-		if (!resultFile.getParentFile().exists()) {
-			System.out.println("---- creating parent directories for " + resultFile.getAbsolutePath());
-			resultFile.getParentFile().mkdirs();
-			if (!resultFile.getParentFile().exists()) {
-				fail("Failed to create parent directories for " + resultFile.getAbsolutePath());
-			}
-		}
+        if (resultFileString != null) {
+            resultFile = new File(resultFileString);
+            System.out.println("-- result file: " + resultFileString + " --> " + resultFile.getAbsolutePath());
+            
+            if (!resultFile.exists()) {
+                System.out.println("---- result file does not exist, will be created");
+            } else {
+                if (!resultFile.isFile()) {
+                    fail("Result file is not a file!!");
+                } else {
+                    System.out.println("---- result file exists, will be appended to");
+                }
+            }		
+            
+            if (!resultFile.getParentFile().exists()) {
+                System.out.println("---- creating parent directories for " + resultFile.getAbsolutePath());
+                resultFile.getParentFile().mkdirs();
+                if (!resultFile.getParentFile().exists()) {
+                    fail("Failed to create parent directories for " + resultFile.getAbsolutePath());
+                }
+            }
+        }
 		
 		try {
 			agentClass = Class.forName(agentClassString);
 		} catch (ClassNotFoundException e) {
-			fail("Failed to find class for name: " + agentClassString, e);
+			fail("Failed to find class for name: " + agentClassString);
 		}
 		
 		Object agentObject = null;
@@ -82,7 +82,8 @@ public class MinesweeperConsole {
 			agentObject = agentClass.getConstructor().newInstance();
 		} catch (Exception e) {
 			fail("Failed to instantiate class: " + agentClassString, e);
-		} 
+        } 
+        
 		if (!IAgent.class.isAssignableFrom(agentObject.getClass())) {
 			fail("Class does not implement IAgent: " + agentClassString);
 		}
@@ -90,8 +91,6 @@ public class MinesweeperConsole {
 	}
 	
 	private static MinesweeperResult run() {
-		System.out.println("Running MINESWEEPER!");
-		
 		MinesweeperConfig config = new MinesweeperConfig();
 		
 		config.agent = agent;
@@ -104,8 +103,9 @@ public class MinesweeperConsole {
 		config.visualization = visualization;
 		
 		MinesweeperResult result = Minesweeper.playConfig(config);
-		
-		outputResult(result, resultFile);
+        
+        if (resultFile != null)
+		    outputResult(result, resultFile);
 		
 		return result;
 	}
@@ -125,9 +125,12 @@ public class MinesweeperConsole {
 			if (header) {
 				writer.println("id;width;height;minesCount;randomSeed;agent;result;steps;advices;playTimeMillis");
 			}
-			writer.println(result.getId() + ";" + width + ";" + height + ";" + minesCount + ";" + randomSeed + ";" + agentClassString + ";" + result.getResult() + ";" + result.getSteps() + ";" + result.getSafeTileSuggestions() + ";" + result.getSimDurationMillis());
+			writer.println(
+                result.getId() + ";" + width + ";" + height + ";" + minesCount + ";" +
+                randomSeed + ";" + agentClassString + ";" + result.getResult() + ";" +
+                result.getSteps() + ";" + result.getSafeTileSuggestions() + ";" +
+                result.getSimDurationMillis());
 			
-			writer.flush();
 			writer.close();
 			
 		} finally {
@@ -139,9 +142,8 @@ public class MinesweeperConsole {
     }
     
     static void usage() {
-        out.println("usage: minesweeper [<option> ...]");
+        out.println("usage: minesweeper [<agent-classname>] [<option> ...]");
         out.println("options:");
-        out.println("  -agent <classname> : agent to run");
         out.println("  -height <num> : board height");
         out.println("  -id <string> : ID to report in results");
         out.println("  -mines <num> : number of mines");
@@ -150,42 +152,60 @@ public class MinesweeperConsole {
         out.println("  -timeout <num> : timeout in milliseconds");
         out.println("  -visual : show visualization");
         out.println("  -width : board width");
+        out.println();
+        out.println("predefined board sizes:");
+        out.println("  -easy: 9 x 9, 10 mines (default)");
+        out.println("  -medium: 16 x 16, 40 mines");
+        out.println("  -hard: 30 x 16, 99 mines");
     }
 
 	public static void main(String[] args) {
         for (int i = 0 ; i < args.length ; ++i)
-            switch (args[i]) {
-                case "-agent":
-                    agentClassString = args[++i];
-                    break;
-                case "-height":
-                    height = Integer.parseInt(args[++i]);
-                    break;
-                case "-id":
-                    id = args[++i];
-                    break;
-                case "-mines":
-                    minesCount = Integer.parseInt(args[++i]);
-                    break;
-                case "-result":
-                    resultFileString = args[++i];
-                    break;
-                case "-seed":
-                    randomSeed = Integer.parseInt(args[++i]);
-                    break;
-                case "-timeout":
-                    timeoutMillis = Integer.parseInt(args[++i]);
-                    break;
-                case "-visual":
-                    visualization = true;
-                    break;
-                case "-width":
-                    width = Integer.parseInt(args[++i]);
-                    break;
-                default:
-                    usage();
-                    return;
-            }
+            if (args[i].startsWith("-"))
+                switch (args[i]) {
+                    case "-easy":
+                        width = height = 9;
+                        minesCount = 10;
+                        break;
+                    case "-hard":
+                        width = 30;
+                        height = 16;
+                        minesCount = 99;
+                        break;
+                    case "-height":
+                        height = Integer.parseInt(args[++i]);
+                        break;
+                    case "-id":
+                        id = args[++i];
+                        break;
+                    case "-medium":
+                        width = height = 16;
+                        minesCount = 40;
+                        break;
+                    case "-mines":
+                        minesCount = Integer.parseInt(args[++i]);
+                        break;
+                    case "-result":
+                        resultFileString = args[++i];
+                        break;
+                    case "-seed":
+                        randomSeed = Integer.parseInt(args[++i]);
+                        break;
+                    case "-timeout":
+                        timeoutMillis = Integer.parseInt(args[++i]);
+                        break;
+                    case "-visual":
+                        visualization = true;
+                        break;
+                    case "-width":
+                        width = Integer.parseInt(args[++i]);
+                        break;
+                    default:
+                        usage();
+                        return;
+                }
+            else
+                agentClassString = args[i];
         
         sanityChecks();
         

@@ -1,5 +1,3 @@
-package cz.minesweeper4j.playground;
-
 import cz.minesweeper4j.Minesweeper;
 import cz.minesweeper4j.simulation.MinesweeperResult;
 import cz.minesweeper4j.simulation.MinesweeperResult.MinesweeperResultType;
