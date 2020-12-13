@@ -60,7 +60,7 @@ public class MinesweeperConfig {
 		if (agent == null) throw new RuntimeException("Agent is null.");
 		if (width <= 0) throw new RuntimeException("width == " + width + " <= 0");
 		if (height <= 0) throw new RuntimeException("height == " + height + " <= 0");
-		if (totalMines <= 0) throw new RuntimeException("totalMines == " + totalMines + " <= 0");		
+		if (totalMines < 0) throw new RuntimeException("totalMines == " + totalMines + " < 0");		
 	}
 
 }
