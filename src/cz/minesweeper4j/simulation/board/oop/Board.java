@@ -1,10 +1,6 @@
 package cz.minesweeper4j.simulation.board.oop;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 import cz.minesweeper4j.simulation.actions.EAction;
 import cz.minesweeper4j.simulation.agent.IAgent;
@@ -17,7 +13,6 @@ import cz.minesweeper4j.simulation.agent.IAgent;
 public class Board implements Cloneable {
 	
 	public int width;
-	
 	public int height;
 	
 	public Tile[][] tiles;

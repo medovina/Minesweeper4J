@@ -7,7 +7,6 @@ import cz.minesweeper4j.simulation.MinesweeperResult.MinesweeperResultType;
 import cz.minesweeper4j.simulation.actions.Action;
 import cz.minesweeper4j.simulation.agent.IAgent;
 import cz.minesweeper4j.simulation.board.oop.Board;
-import cz.minesweeper4j.ui.Ctx;
 import cz.minesweeper4j.ui.MinesweeperFrame;
 
 public class MinesweeperSim implements IMinesweeperGame, Runnable {
@@ -128,9 +127,7 @@ public class MinesweeperSim implements IMinesweeperGame, Runnable {
 			}
 			
 			if (visualization) {
-				Ctx.init();
 				vis = new MinesweeperFrame(board, agent);
-				vis.setLocation(50, 50);
 				vis.setVisible(true);
 				vis.getPanel().updateBoardView();
 			}
@@ -223,16 +220,14 @@ public class MinesweeperSim implements IMinesweeperGame, Runnable {
 			try {
 				if (visualization) {
 					vis.getPanel().updateBoardView();
-					Thread.sleep(1000);					
+					Thread.sleep(2000);					
 				}
 			} catch (Exception e) {				
 			} finally {
 				try {
 					vis.setVisible(false);
-					vis.die();
 					vis.dispose();
 					vis = null;
-					Ctx.die();
 				} catch (Exception e) {					
 				}
 			}
@@ -243,7 +238,7 @@ public class MinesweeperSim implements IMinesweeperGame, Runnable {
 	private void onSimulationException(Exception e) {
 		result.setSimEndMillis(System.currentTimeMillis());
 		result.setResult(MinesweeperResultType.SIMULATION_EXCEPTION);
-		result.setExecption(e);
+		result.setException(e);
 		result.setSafeTileSuggestions(safeTileSuggestions);
 		try {
 			agent.stop();
@@ -316,7 +311,7 @@ public class MinesweeperSim implements IMinesweeperGame, Runnable {
 	private void onAgentException(Exception e) {
 		result.setSimEndMillis(System.currentTimeMillis());
 		result.setResult(MinesweeperResultType.AGENT_EXCEPTION);
-		result.setExecption(e);
+		result.setException(e);
 		result.setSafeTileSuggestions(safeTileSuggestions);
 		try {
 			agent.stop();

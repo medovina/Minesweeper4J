@@ -50,7 +50,7 @@ public class Minesweeper {
 		if (game.getResult() != null) {
 			MinesweeperResult result = game.getResult();
 			if (result.getResult() == MinesweeperResultType.SIMULATION_EXCEPTION) {
-				throw new RuntimeException("Game failed.", result.getExecption());
+				throw new RuntimeException("Game failed.", result.getException());
 			}
 		}
 		

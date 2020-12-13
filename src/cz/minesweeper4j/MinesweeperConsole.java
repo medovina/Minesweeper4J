@@ -33,7 +33,7 @@ public class MinesweeperConsole {
 	
 	private static final String ARG_MINES_COUNT_LONG = "mines-count";
 	
-	private static final char ARG_RANDOM_SEED_SHORT = 'r';
+	private static final char ARG_RANDOM_SEED_SHORT = 's';
 	
 	private static final String ARG_RANDOM_SEED_LONG = "random-seed";
 	
@@ -205,7 +205,7 @@ public class MinesweeperConsole {
 	    	.setLongFlag(ARG_RANDOM_SEED_LONG);    
 	    opt7.setHelp("Random seed to use to randomly place mines.");
 	
-	    jsap.registerParameter(opt6);
+	    jsap.registerParameter(opt7);
    	}
 
 	private static void readConfig(String[] args) {

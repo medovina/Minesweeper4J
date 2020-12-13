@@ -3,21 +3,24 @@ package cz.minesweeper4j.ui;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-import cz.cuni.amis.clear2d.engine.C2DFrame;
+import javax.swing.JFrame;
+
 import cz.minesweeper4j.simulation.agent.IAgent;
 import cz.minesweeper4j.simulation.board.oop.Board;
 
-public class MinesweeperFrame extends C2DFrame {
-
-	/**
-	 * Auto-generated.
-	 */
-	private static final long serialVersionUID = 5421140837229980680L;
-	
+public class MinesweeperFrame extends JFrame {
+	private static final long serialVersionUID = 0;
+    
+    MinesweeperPanel panel;
 	private KeyListener keyListener;
 
 	public MinesweeperFrame(Board board, IAgent agent) {
-		super("Minesweeper4J", new MinesweeperPanel(board, agent));
+        super("Minesweeper4J");
+        panel = new MinesweeperPanel(board, agent);
+        add(panel);
+        pack();
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		keyListener = new KeyListener() {
 			
@@ -49,7 +52,7 @@ public class MinesweeperFrame extends C2DFrame {
 	}
 	
 	public MinesweeperPanel getPanel() {
-		return (MinesweeperPanel)panel;
+		return panel;
 	}
 
 }

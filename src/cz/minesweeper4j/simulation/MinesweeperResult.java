@@ -63,7 +63,7 @@ public class MinesweeperResult {
 	
 	private MinesweeperResultType result = null;
 	
-	private Throwable execption;
+	private Throwable exception;
 	
 	private int steps = 0;
 	
@@ -169,12 +169,12 @@ public class MinesweeperResult {
 	 * filled in case of {@link #getResult()} == {@link MinesweeperResultType#AGENT_EXCEPTION} or {@link MinesweeperResultType#SIMULATION_EXCEPTION}.  
 	 * @return
 	 */
-	public Throwable getExecption() {
-		return execption;
+	public Throwable getException() {
+		return exception;
 	}
 
-	public void setExecption(Throwable execption) {
-		this.execption = execption;
+	public void setException(Throwable execption) {
+		this.exception = execption;
 	}
 		
 	/**

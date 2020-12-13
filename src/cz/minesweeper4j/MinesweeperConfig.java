@@ -2,7 +2,6 @@ package cz.minesweeper4j;
 
 import java.util.Random;
 
-import cz.cuni.amis.clear2d.utils.Sanitize;
 import cz.minesweeper4j.simulation.agent.IAgent;
 
 public class MinesweeperConfig {
@@ -58,7 +57,6 @@ public class MinesweeperConfig {
 	public void validate() {
 		if (id == null) throw new RuntimeException("ID is null.");
 		if (id.length() == 0) throw new RuntimeException("ID is of zero length.");
-		id = Sanitize.idify(id);
 		if (agent == null) throw new RuntimeException("Agent is null.");
 		if (width <= 0) throw new RuntimeException("width == " + width + " <= 0");
 		if (height <= 0) throw new RuntimeException("height == " + height + " <= 0");
