@@ -1,6 +1,6 @@
-import cz.minesweeper4j.agents.ArtificialAgent;
-import cz.minesweeper4j.simulation.actions.Action;
-import cz.minesweeper4j.simulation.board.oop.Board;
+import minesweeper4j.agents.ArtificialAgent;
+import minesweeper4j.game.Action;
+import minesweeper4j.game.Board;
 
 public class MyAgent extends ArtificialAgent {
 	

@@ -1,1 +1,1 @@
-java -cp target/classes cz.minesweeper4j.MinesweeperConsole $*
+java -cp target/classes minesweeper4j.MinesweeperConsole $*

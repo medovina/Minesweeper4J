@@ -1,8 +1,8 @@
-package cz.minesweeper4j;
+package minesweeper4j;
 
 import java.util.Random;
 
-import cz.minesweeper4j.simulation.agent.IAgent;
+import minesweeper4j.game.IAgent;
 
 public class MinesweeperConfig {
 	

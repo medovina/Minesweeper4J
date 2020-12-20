@@ -1,13 +1,13 @@
-package cz.minesweeper4j;
+package minesweeper4j;
 
 import static java.lang.System.out;
 
 import java.io.*;
 
-import cz.minesweeper4j.agents.ArtificialAgent;
-import cz.minesweeper4j.simulation.MinesweeperResult;
-import cz.minesweeper4j.simulation.MinesweeperResult.MinesweeperResultType;
-import cz.minesweeper4j.simulation.agent.IAgent;
+import minesweeper4j.agents.ArtificialAgent;
+import minesweeper4j.game.IAgent;
+import minesweeper4j.game.MinesweeperResult;
+import minesweeper4j.game.MinesweeperResult.MinesweeperResultType;
 
 public class MinesweeperConsole {
 	private static void fail(String errorMessage) {
@@ -235,7 +235,7 @@ public class MinesweeperConsole {
         }
         else {
             if (agentClass == null)
-                agentClass = "cz.minesweeper4j.agents.HumanAgent";
+                agentClass = "minesweeper4j.agents.HumanAgent";
             config.agent = makeAgent(agentClass);
             
             if (seed >= 0)

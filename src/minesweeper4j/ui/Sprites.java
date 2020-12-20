@@ -1,4 +1,4 @@
-package cz.minesweeper4j.ui;
+package minesweeper4j.ui;
 
 import java.awt.image.BufferedImage;
 import java.io.IOException;

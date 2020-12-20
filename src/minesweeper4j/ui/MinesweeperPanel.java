@@ -1,12 +1,11 @@
-package cz.minesweeper4j.ui;
+package minesweeper4j.ui;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
 import javax.swing.JPanel;
 
-import cz.minesweeper4j.simulation.agent.IAgent;
-import cz.minesweeper4j.simulation.board.oop.*;
+import minesweeper4j.game.*;
 
 public class MinesweeperPanel extends JPanel {
     final int TILE = 32;

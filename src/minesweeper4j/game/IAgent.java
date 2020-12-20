@@ -1,9 +1,6 @@
-package cz.minesweeper4j.simulation.agent;
+package minesweeper4j.game;
 
 import java.awt.event.KeyEvent;
-
-import cz.minesweeper4j.simulation.actions.Action;
-import cz.minesweeper4j.simulation.board.oop.Board;
 
 public interface IAgent {
 

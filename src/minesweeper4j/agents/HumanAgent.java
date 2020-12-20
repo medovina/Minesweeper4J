@@ -1,12 +1,12 @@
-package cz.minesweeper4j.agents;
+package minesweeper4j.agents;
 
 import java.awt.event.KeyEvent;
 
-import cz.minesweeper4j.simulation.actions.Action;
-import cz.minesweeper4j.simulation.actions.EAction;
-import cz.minesweeper4j.simulation.agent.IAgent;
-import cz.minesweeper4j.simulation.board.oop.Board;
-import cz.minesweeper4j.simulation.board.oop.Tile;
+import minesweeper4j.game.Action;
+import minesweeper4j.game.Board;
+import minesweeper4j.game.EAction;
+import minesweeper4j.game.IAgent;
+import minesweeper4j.game.Tile;
 
 public class HumanAgent implements IAgent {
 

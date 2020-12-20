@@ -1,12 +1,12 @@
-package cz.minesweeper4j.ui;
+package minesweeper4j.ui;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 import javax.swing.JFrame;
 
-import cz.minesweeper4j.simulation.agent.IAgent;
-import cz.minesweeper4j.simulation.board.oop.Board;
+import minesweeper4j.game.Board;
+import minesweeper4j.game.IAgent;
 
 public class MinesweeperFrame extends JFrame {
 	private static final long serialVersionUID = 0;

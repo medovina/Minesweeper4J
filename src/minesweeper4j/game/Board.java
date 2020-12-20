@@ -1,9 +1,6 @@
-package cz.minesweeper4j.simulation.board.oop;
+package minesweeper4j.game;
 
 import java.util.*;
-
-import cz.minesweeper4j.simulation.actions.EAction;
-import cz.minesweeper4j.simulation.agent.IAgent;
 
 /**
  * Minesweeper board as used by the simulator.

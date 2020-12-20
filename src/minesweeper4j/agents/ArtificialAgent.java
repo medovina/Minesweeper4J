@@ -1,13 +1,13 @@
-package cz.minesweeper4j.agents;
+package minesweeper4j.agents;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import cz.minesweeper4j.simulation.actions.Action;
-import cz.minesweeper4j.simulation.board.oop.Board;
-import cz.minesweeper4j.simulation.board.oop.Pos;
-import cz.minesweeper4j.simulation.board.oop.Tile;
+import minesweeper4j.game.Action;
+import minesweeper4j.game.Board;
+import minesweeper4j.game.Pos;
+import minesweeper4j.game.Tile;
 
 /**
  * An agent that auto-computes within {@link #observe(Board)}:

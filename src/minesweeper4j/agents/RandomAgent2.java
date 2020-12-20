@@ -1,10 +1,10 @@
-package cz.minesweeper4j.agents;
+package minesweeper4j.agents;
 
-import cz.minesweeper4j.Minesweeper;
-import cz.minesweeper4j.simulation.MinesweeperResult;
-import cz.minesweeper4j.simulation.actions.Action;
-import cz.minesweeper4j.simulation.agent.IAgent;
-import cz.minesweeper4j.simulation.board.oop.Board;
+import minesweeper4j.Minesweeper;
+import minesweeper4j.game.Action;
+import minesweeper4j.game.Board;
+import minesweeper4j.game.IAgent;
+import minesweeper4j.game.MinesweeperResult;
 
 /**
  * This agent first asks for advises until non-zero positions start to be advised.

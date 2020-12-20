@@ -1,4 +1,4 @@
-package cz.minesweeper4j.simulation.actions;
+package minesweeper4j.game;
 
 public enum EAction {
 

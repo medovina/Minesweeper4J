@@ -1,6 +1,4 @@
-package cz.minesweeper4j.simulation.actions;
-
-import cz.minesweeper4j.simulation.board.oop.Board;
+package minesweeper4j.game;
 
 public class Action {
 

@@ -1,8 +1,8 @@
-package cz.minesweeper4j.agents;
+package minesweeper4j.agents;
 
-import cz.minesweeper4j.simulation.actions.Action;
-import cz.minesweeper4j.simulation.actions.EAction;
-import cz.minesweeper4j.simulation.board.oop.Pos;
+import minesweeper4j.game.Action;
+import minesweeper4j.game.EAction;
+import minesweeper4j.game.Pos;
 
 public class ArtificialAgentActions {
 

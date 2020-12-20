@@ -1,6 +1,4 @@
-package cz.minesweeper4j.simulation;
-
-import cz.minesweeper4j.simulation.agent.IAgent;
+package minesweeper4j.game;
 
 public class MinesweeperResult {
 	

@@ -1,4 +1,4 @@
-package cz.minesweeper4j.simulation.board.oop;
+package minesweeper4j.game;
 
 public class Tile implements Cloneable {
 

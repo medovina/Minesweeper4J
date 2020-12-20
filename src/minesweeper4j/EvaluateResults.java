@@ -1,4 +1,4 @@
-package cz.minesweeper4j;
+package minesweeper4j;
 
 public class EvaluateResults {
     public long avgTime;

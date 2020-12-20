@@ -1,4 +1,4 @@
-package cz.minesweeper4j.ui;
+package minesweeper4j.ui;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionListener;

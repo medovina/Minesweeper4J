@@ -1,11 +1,11 @@
-package cz.minesweeper4j;
+package minesweeper4j;
 
 import java.util.Random;
 
-import cz.minesweeper4j.simulation.MinesweeperResult;
-import cz.minesweeper4j.simulation.MinesweeperResult.MinesweeperResultType;
-import cz.minesweeper4j.simulation.agent.IAgent;
-import cz.minesweeper4j.simulation.board.oop.Board;
+import minesweeper4j.game.Board;
+import minesweeper4j.game.IAgent;
+import minesweeper4j.game.MinesweeperResult;
+import minesweeper4j.game.MinesweeperResult.MinesweeperResultType;
 
 public class Minesweeper {
 		

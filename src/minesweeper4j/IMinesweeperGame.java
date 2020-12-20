@@ -1,6 +1,6 @@
-package cz.minesweeper4j;
+package minesweeper4j;
 
-import cz.minesweeper4j.simulation.MinesweeperResult;
+import minesweeper4j.game.MinesweeperResult;
 
 public interface IMinesweeperGame {
 
@@ -21,7 +21,8 @@ public interface IMinesweeperGame {
 		FINISHED,
 		
 		/**
-		 * Minesweeper game has ended with an exception, check {@link IMinesweeperGame#getResult()} and {@link MinesweeperResult#getExecption()} for more info.
+		 * Minesweeper game has ended with an exception, check {@link IMinesweeperGame#getResult()}
+         * and {@link MinesweeperResult#getExecption()} for more info.
 		 */
 		FAILED, 
 		
@@ -48,13 +49,17 @@ public interface IMinesweeperGame {
 	public MinesweeperGameState getGameState();
 		
 	/**
-	 * Result of the simulation; non-null only iff {@link #getGameState()} == {@link MinesweeperGameState#FINISHED} or {@link MinesweeperGameState#FAILED}. 
+	 * Result of the simulation; non-null only iff
+     * {@link #getGameState()} == {@link MinesweeperGameState#FINISHED} or
+     * {@link MinesweeperGameState#FAILED}. 
 	 * @return
 	 */
 	public MinesweeperResult getResult();
 	
 	/**
-	 * Wait for the game to finish if {@link #getGameState() == {@link MinesweeperGameState#RUNNING}; will block the thread that calls this until the game ends.
+	 * Wait for the game to finish if
+     * {@link #getGameState() == {@link MinesweeperGameState#RUNNING};
+     * will block the thread that calls this until the game ends.
 	 * @return
 	 * @throws InterruptedException 
 	 */
