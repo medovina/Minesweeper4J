@@ -48,5 +48,33 @@ public class Action {
 	public String toString() {
 		return "Action[" + type + (type == EAction.SUGGEST_SAFE_TILE ? "" : "|" + tileX + "," + tileY) + "]";
 	}
+
+	public static Action open(int tileX, int tileY) {
+		return new Action(EAction.OPEN, tileX, tileY);
+	}
+	
+	public static Action flag(int tileX, int tileY) {
+		return new Action(EAction.FLAG, tileX, tileY);
+	}
+	
+	public static Action unflag(int tileX, int tileY) {
+		return new Action(EAction.UNFLAG, tileX, tileY);
+	}
+	
+	public static Action open(Pos pos) {
+		return new Action(EAction.OPEN, pos.x, pos.y);
+	}
+	
+	public static Action flag(Pos pos) {
+		return new Action(EAction.FLAG, pos.x, pos.y);
+	}
+	
+	public static Action unflag(Pos pos) {
+		return new Action(EAction.UNFLAG, pos.x, pos.y);
+	}
+	
+	public static Action advice() {
+		return new Action(EAction.SUGGEST_SAFE_TILE);
+	}
 	
 }

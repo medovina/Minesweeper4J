@@ -18,8 +18,6 @@ public abstract class ArtificialAgentBase implements IAgent {
 	
 	private RuntimeException agentException;
 	
-	protected ArtificialAgentActions actions = new ArtificialAgentActions();
-	
 	protected boolean verbose = false;
 	
 	protected boolean synchronous = true;

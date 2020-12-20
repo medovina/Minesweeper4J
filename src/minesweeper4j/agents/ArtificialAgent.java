@@ -36,17 +36,20 @@ public abstract class ArtificialAgent extends ArtificialAgentBase {
 	protected List<Pos> unknowns;
 	
 	/**
-	 * List of tiles that are currently not {@link Tile#visible} but they have at least one {@link Tile#visible} neighbor tile.
+	 * List of tiles that are currently not {@link Tile#visible} but they have at least one
+     * {@link Tile#visible} neighbor tile.
 	 */
 	protected List<Pos> borderUnknowns;
 	
 	/**
-	 * List of tiles that are currently {@link Tile#visible}, they have {@link Tile#mines} &gt; 1 and have at least one non-{@link Tile#visible} neighbor tile.
+	 * List of tiles that are currently {@link Tile#visible}, they have
+     * {@link Tile#mines} &gt; 1 and have at least one non-{@link Tile#visible} neighbor tile.
 	 */
 	protected List<Pos> borderNumbers;
 	
 	/**
-	 * Board the {@link #thinkImpl(Board, Board)} seen previously, null during the first {@link #thinkImpl(Board, Board)}.
+	 * Board the {@link #thinkImpl(Board, Board)} seen previously, null during
+     * the first {@link #thinkImpl(Board, Board)}.
 	 */
 	protected Board previousBoard;
 	
@@ -152,7 +155,7 @@ public abstract class ArtificialAgent extends ArtificialAgentBase {
 		if (board.safeTilePos != null && !board.tile(board.safeTilePos).visible) {
 			if (verbose)
 				System.out.format("took hint at %d, %d\n", board.safeTilePos.x, board.safeTilePos.y);
-			return actions.open(board.safeTilePos);
+			return Action.open(board.safeTilePos);
 		}
 		
 		// CHECK WHETHER THE BOARD IS COMPLETELY SOLVABLE, IF ONLY MINES, FLAG THEM 
@@ -162,7 +165,7 @@ public abstract class ArtificialAgent extends ArtificialAgentBase {
 			}
 			for (Pos pos : unknowns) {
 				if (!board.tile(pos).flag) {
-					return actions.flag(pos);
+					return Action.flag(pos);
 				}
 			}
 			throw new RuntimeException("Should not reach here; solution invalid? board.totalMines invalid?");

@@ -24,7 +24,7 @@ public class RandomAgent1 extends ArtificialAgent {
 	@Override
 	protected Action thinkImpl(Board board, Board previousBoard) {
 		// RANDOM CLICK
-		return actions.open(unknowns.get(random.nextInt(unknowns.size())));		
+		return Action.open(unknowns.get(random.nextInt(unknowns.size())));		
 	}
 	
 	public static void main(String[] args) {

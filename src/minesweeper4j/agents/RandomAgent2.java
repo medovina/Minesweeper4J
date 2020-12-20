@@ -28,17 +28,17 @@ public class RandomAgent2 extends ArtificialAgent {
 		if (board.safeTilePos != null) {
 			if (!board.tile(board.safeTilePos).visible) {
 				// OPEN SAFE POS
-				return actions.open(board.safeTilePos);
+				return Action.open(board.safeTilePos);
 			} else 
 			if (board.tile(board.safeTilePos).mines == 0) {
 				// ASK FOR ANOTHER ADVICE
-				return actions.advice();
+				return Action.advice();
 			} 
 			// stop asking, try random
 		}
 		
 		// RANDOM CLICK
-		return actions.open(unknowns.get(random.nextInt(unknowns.size())));		
+		return Action.open(unknowns.get(random.nextInt(unknowns.size())));		
 	}
 	
 	public static void main(String[] args) {
