@@ -210,7 +210,7 @@ public class MinesweeperSim implements IMinesweeperGame, Runnable {
 					++steps;
 					observe = true;
 				} else
-                    System.out.println("warning: ignoring invalid action");
+                    System.out.printf("warning: ignoring invalid action: %s\n", agentAction);
 				
 				agentAction = null;
 			}

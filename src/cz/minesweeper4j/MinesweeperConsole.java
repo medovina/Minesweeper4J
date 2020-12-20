@@ -224,6 +224,7 @@ public class MinesweeperConsole {
 		config.width = width;
         config.height = height;
         config.totalMines = numMines;
+        System.out.printf("board size is %d x %d, %d mines\n", width, height, numMines);
         
         if (simGames > 0) {
             if (agentClass == null) {

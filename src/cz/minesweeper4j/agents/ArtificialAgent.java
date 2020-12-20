@@ -137,13 +137,11 @@ public abstract class ArtificialAgent extends ArtificialAgentBase {
 		
 		// SLEEPING
 		if (sleepInterleveMillis > 0) {
-			System.out.println("Sleeping for " + sleepInterleveMillis + "ms...");
 			try {
 				Thread.sleep(sleepInterleveMillis);
 			} catch (InterruptedException e) {
 				return null;
 			}
-			System.out.println("Woke up!");
 		}
 		
 		// BOARD STATE
@@ -167,7 +165,6 @@ public abstract class ArtificialAgent extends ArtificialAgentBase {
 					return actions.flag(pos);
 				}
 			}
-			// ???
 			throw new RuntimeException("Should not reach here; solution invalid? board.totalMines invalid?");
 		}
 		
