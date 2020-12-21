@@ -1,10 +1,6 @@
 package minesweeper4j;
 
-import java.util.Random;
-
-import minesweeper4j.game.Board;
-import minesweeper4j.game.IAgent;
-import minesweeper4j.game.MinesweeperResult;
+import minesweeper4j.game.*;
 import minesweeper4j.game.MinesweeperResult.MinesweeperResultType;
 
 public class Minesweeper {
@@ -63,22 +59,5 @@ public class Minesweeper {
 	public static MinesweeperResult playConfig(MinesweeperConfig config) {
 		Minesweeper minesweeper = new Minesweeper(config);
 		return minesweeper.play();
-	}
-	
-	public static MinesweeperResult playAgent(String id, int width, int height, int totalMines, long timeoutMillis, int randomSeed, boolean visualization, IAgent agent) {
-		MinesweeperConfig config = new MinesweeperConfig();
-		
-		config.id = id;
-		config.width = width;
-		config.height = height;
-		config.randomSeed = randomSeed;
-		config.random = new Random(randomSeed);
-		config.totalMines = totalMines;
-		config.agent = agent;
-		config.visualization = visualization;
-		config.timeoutMillis = timeoutMillis;
-		
-		return playConfig(config);
-	}
-	
+	}	
 }

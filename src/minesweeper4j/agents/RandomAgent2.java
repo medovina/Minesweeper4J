@@ -1,10 +1,7 @@
 package minesweeper4j.agents;
 
-import minesweeper4j.Minesweeper;
 import minesweeper4j.game.Action;
 import minesweeper4j.game.Board;
-import minesweeper4j.game.IAgent;
-import minesweeper4j.game.MinesweeperResult;
 
 /**
  * This agent first asks for advises until non-zero positions start to be advised.
@@ -39,14 +36,6 @@ public class RandomAgent2 extends ArtificialAgent {
 		
 		// RANDOM CLICK
 		return Action.open(unknowns.get(random.nextInt(unknowns.size())));		
-	}
-	
-	public static void main(String[] args) {
-		IAgent agent = new RandomAgent2(); 
-		
-		MinesweeperResult result = Minesweeper.playAgent("RandomAgent", 10, 10, 10, 60 * 1000, 1, true, agent);
-		System.out.println("---// FINISHED //---");
-		System.out.println(result);
 	}
 
 }

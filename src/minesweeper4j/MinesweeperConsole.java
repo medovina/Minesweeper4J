@@ -95,6 +95,9 @@ public class MinesweeperConsole {
 
 	public static EvaluateResults runGames(
         MinesweeperConfig config, int masterSeed, String className, int games) {
+
+        System.out.printf("board size is %d x %d, %d mines\n",
+            config.width, config.height, config.totalMines);
         
 		long totalTime = 0;
 		int totalHints = 0;
@@ -122,9 +125,9 @@ public class MinesweeperConsole {
         
         EvaluateResults results = new EvaluateResults();
         results.avgTime = totalTime / games;
-        results.avgHints = 1.0 * totalHints / games;
+        results.totalHints = totalHints;
 		System.out.format("average over %d runs: time = %d ms, hints = %.1f\n",
-                games, results.avgTime, results.avgHints);
+                games, results.avgTime, 1.0 * totalHints / games);
         return results;
     }
     
@@ -147,10 +150,8 @@ public class MinesweeperConsole {
 
 	public static void main(String[] args) {
         MinesweeperConfig config = new MinesweeperConfig();
+        config.setSize(9, 9, 10);   // default easy size
 	
-        int width = 0, height = 0;
-    	int numMines = 0;
-        double density = -1;
         String agentClass = null;
         String resultFileString = null;
         int seed = -1;
@@ -160,23 +161,19 @@ public class MinesweeperConsole {
             if (args[i].startsWith("-"))
                 switch (args[i]) {
                     case "-density":
-                        density = Float.parseFloat(args[++i]);
+                        config.density = Double.parseDouble(args[++i]);
                         break;
                     case "-easy":
-                        width = height = 9;
-                        numMines = 10;
+                        config.setSize(9, 9, 10);
                         break;
                     case "-hard":
-                        width = 30;
-                        height = 16;
-                        numMines = 99;
+                        config.setSize(30, 16, 99);
                         break;
                     case "-id":
                         config.id = args[++i];
                         break;
                     case "-medium":
-                        width = height = 16;
-                        numMines = 40;
+                        config.setSize(16, 16, 40);
                         break;
                     case "-result":
                         resultFileString = args[++i];
@@ -188,11 +185,14 @@ public class MinesweeperConsole {
                         simGames = Integer.parseInt(args[++i]);
                         break;
                     case "-size":
-                        width = Integer.parseInt(args[++i]);
+                        int width = Integer.parseInt(args[++i]);
+                        int height;
                         if (i + 1 < args.length && Character.isDigit(args[i + 1].charAt(0)))
                             height = Integer.parseInt(args[++i]);
                         else
                             height = width;
+
+                        config.setSize(width, height);
                         break;
                     case "-timeout":
                         config.timeoutMillis = Integer.parseInt(args[++i]);
@@ -204,28 +204,6 @@ public class MinesweeperConsole {
             else
                 agentClass = args[i];
 
-        if (width == 0) {       // no size specified
-            if (density != -1) {
-                System.out.println("error: must specify size with -density");
-                return;
-            }
-            width = height = 9;
-            numMines = 10;
-        } else if (numMines == 0) {
-            if (density == -1)
-                density = 0.2;
-            if (density < 0 || density > 1.0) {
-                System.out.println("error: density must be between 0.0 and 1.0");
-                return;
-            }
-            numMines = (int) Math.round(density * width * height);
-        }
-        
-		config.width = width;
-        config.height = height;
-        config.totalMines = numMines;
-        System.out.printf("board size is %d x %d, %d mines\n", width, height, numMines);
-        
         if (simGames > 0) {
             if (agentClass == null) {
                 out.println("error: must specify agent class with -sim");

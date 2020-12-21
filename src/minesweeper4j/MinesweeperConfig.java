@@ -35,7 +35,11 @@ public class MinesweeperConfig {
 	 * How many mines to generate.
 	 */
 	public int totalMines;
-	
+    
+
+    // Density for calculating the number of mines if not specified.
+    public double density = 0.2;
+
 	/**
 	 * Timeout for the game; positive number == timeout in effect; otherwise no timeout.
 	 */
@@ -54,6 +58,30 @@ public class MinesweeperConfig {
     public void setSeed(int seed) {
         randomSeed = seed;
         random = new Random(seed);
+    }
+
+    public void setSize(int width, int height, int totalMines) {
+        this.width = width;
+        this.height = height;
+        this.totalMines = totalMines;
+    }
+
+    void calcMines() {
+        this.totalMines = (int) Math.round(density * width * height);
+    }
+
+    public void setSize(int width, int height) {
+        this.width = width;
+        this.height = height;
+        calcMines();
+    }
+
+    public void setDensity(double density) {
+        if (density < 0 || density > 1.0)
+            throw new Error("density must be between 0.0 and 1.0");
+
+        this.density = density;
+        calcMines();
     }
 		
 	/**
